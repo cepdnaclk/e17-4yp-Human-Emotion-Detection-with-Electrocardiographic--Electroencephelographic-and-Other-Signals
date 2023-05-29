@@ -4,7 +4,7 @@ permalink: index.html
 
 # Please update this with your repository name and title
 repository-name:e17-4yp-Human-Emotion-Detection-with-Electrocardiographic--Electroencephelographic-and-Other-Signals
-title:Human Emotion Detection with Electrocardiographic,Electroencephelographic and Other Signals
+title:Human-Emotion-Detection-with-Electrocardiographic,-Electroencephelographic-and-Other-Signals
 ---
 
 # Human Emotion Detection with Electrocardiographic,Electroencephelographic and Other Signals
