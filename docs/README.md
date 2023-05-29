@@ -13,9 +13,9 @@ title: Human Emotion Detection with Electrocardiographic-Electroencephelographic
 
 #### Team
 
-- E/17/144, KPCDB Jayaweera, [email](e17144@eng.pdn.ac.lk)
-- E/17/091, PGAP Gallage, [email](e17091@eng.pdn.ac.lk)
-- E/17/405, WDLP Wijesinghe, [email](e17405@eng.pdn.ac.lk)
+- E/17/144, KPCDB Jayaweera, [e17144@eng.pdn.ac.lk](mailto:e17144@eng.pdn.ac.lk)
+- E/17/091, PGAP Gallage, [e17091@eng.pdn.ac.lk](mailto:e17091@eng.pdn.ac.lk)
+- E/17/405, WDLP Wijesinghe, [e17405@eng.pdn.ac.lk](mailto:e17405@eng.pdn.ac.lk)
 
 #### Supervisors
 
