@@ -19,10 +19,10 @@ title: Human Emotion Detection with Electrocardiographic-Electroencephelographic
 
 #### Supervisors
 
-- Prof.Roshan Ragel, [email](roshanr@eng.pdn.ac.lk)
-- Dr.Isuru Nawinne, [email](isurunawinne@eng.pdn.ac.lk)
-- Dr.Mahanama Wickramasinghe, [email](mahanamaw@eng.pdn.ac.lk)
-- Dr.Vajira Thambawita, [email](vajira@simula.no)
+- Prof.Roshan Ragel, [roshanr@eng.pdn.ac.lk](mailto:roshanr@eng.pdn.ac.lk)
+- Dr.Isuru Nawinne, [isurunawinne@eng.pdn.ac.lk](mailto:isurunawinne@eng.pdn.ac.lk)
+- Dr.Mahanama Wickramasinghe, [mahanamaw@eng.pdn.ac.lk](mailto:mahanamaw@eng.pdn.ac.lk)
+- Dr.Vajira Thambawita, [vajira@simula.no](mailto:vajira@simula.no)
 
 #### Table of content
 
