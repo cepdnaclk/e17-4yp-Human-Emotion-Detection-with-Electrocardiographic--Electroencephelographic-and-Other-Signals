@@ -20,9 +20,6 @@ if __name__ == "__main__":
 
     process1.start()
     process2.start()
-    time.sleep(2.3)
-    print("Hello World")
-
     process1.join()
     process2.join()
 
