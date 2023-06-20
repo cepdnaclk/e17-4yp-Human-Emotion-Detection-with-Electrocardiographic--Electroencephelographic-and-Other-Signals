@@ -1,10 +1,10 @@
-import multiprocessing
-import time
-from flask import Flask, request
-import serial
-import continuous_threading
-import os
 import datetime
+import multiprocessing
+import os
+import time
+
+import serial
+from flask import Flask, request
 from flask_cors import CORS
 
 COM_PORT = "COM3"
@@ -19,7 +19,6 @@ data_points = []
 start_time = ""
 
 start = False
-save_file = False
 
 if not os.path.exists(SAVE_DIR):
     os.makedirs(SAVE_DIR)
@@ -27,18 +26,64 @@ if not os.path.exists(SAVE_DIR):
 app = Flask(__name__)
 CORS(app)
 
-# serialPort = serial.Serial(port=COM_PORT, baudrate=BAUD_RATE, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
-# print(serialPort)
+# Uncomment following when the data collection is connected to the port
+serialPort = serial.Serial(port=COM_PORT, baudrate=BAUD_RATE, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
+print(serialPort)
+
 serial_string = ""  # To hold data coming over UART
+processes = []  # to temporally maintain the running processes
 
-processes = []
 
+def ecg_collection():
+    global start
+    global data_points
+    global subject_id
+    global emotion
+    global start_datetime
+    global start_time
+    global serial_string  # I have added this
 
-def task1():
-    while True:
-        print("Task 1 running")
-        time.sleep(2)
-        print("Task 1 Finished")
+    start_time = time.time()
+    request_data = request.json
+    subject_id = str(request_data['subjectId'])
+    emotion = str(request_data['emotion'])
+
+    while (start):
+        if serialPort.in_waiting > 0:
+            # Read data out of the buffer until a new line is found
+            serial_string = serialPort.readline()
+            elapsed_time = time.time() - start_time
+
+            try:
+                data_points.append(
+                    str(format(elapsed_time, '.3f')) + ":" + str(serial_string.decode('Ascii').rstrip('\r\n')))
+            except:
+                pass
+
+        start_datetime = str(datetime.datetime.now()).split('.')[0].replace(":", "_")
+
+        print("Subject_" + subject_id + " started")
+
+        return "Subject-" + subject_id + " started"
+
+    print("writing to the file .....")
+    # print(subject_id)
+
+    # make directory for subject id, emotion inside the SAVE_DIR
+    if not os.path.exists(os.path.join(SAVE_DIR, "S-" + subject_id)):
+        os.makedirs(os.path.join(SAVE_DIR, "S-" + subject_id))
+
+    if not os.path.exists(os.path.join(SAVE_DIR, "S-" + subject_id, emotion)):
+        os.makedirs(os.path.join(SAVE_DIR, "S-" + subject_id, emotion))
+
+    file_name = "S-" + subject_id + "_" + emotion + "_" + start_datetime + ".txt"
+    with open((os.path.join(SAVE_DIR, "S-" + subject_id, emotion, file_name)), 'w') as f:
+        for line in data_points:
+            f.write(f"{line}\n")
+
+    data_points = []
+    serial_string = ""
+    print("file saved")
 
 
 def task2():
@@ -56,8 +101,11 @@ def home():
 @app.route('/start', methods=['POST'])
 def start_processes():
     global processes
+    global start
+
+    start = True  # to start the data collection process
     if len(processes) == 0:
-        process1 = multiprocessing.Process(target=task1)
+        process1 = multiprocessing.Process(target=ecg_collection)
         process2 = multiprocessing.Process(target=task2)
         processes = [process1, process2]
         for process in processes:
@@ -70,11 +118,14 @@ def start_processes():
 @app.route('/end', methods=['POST'])
 def end_processes():
     global processes
+    global start
+
+    start = False  # to stop the data collection process
     if len(processes) > 0:
         for process in processes:
-            process.terminate()
-            # process.join()
-        # we can use this if we want to finish the process
+            # process.terminate()
+            process.join()
+        # we can use join or terminate according to the requirement
         processes = []
         return "Ended the processes."
     else:
