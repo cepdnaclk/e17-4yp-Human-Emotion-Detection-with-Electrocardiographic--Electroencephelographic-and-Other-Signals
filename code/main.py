@@ -21,11 +21,10 @@ if not os.path.exists(SAVE_DIR):
 app = Flask(__name__)
 CORS(app)
 
-def ecg_collection(request_data, start, start_datetime):
+def ecg_collection(request_data, start, start_datetime, start_time):
 
     data_points = []
-    start_time = time.time()
-
+    
     subject_id = str(request_data['subjectId'])
     emotion = str(request_data['emotion'])    
     print("Subject_" + subject_id + " started")
@@ -83,7 +82,8 @@ def start_processes():
 
     if len(processes) == 0:
         start_datetime = str(datetime.datetime.now()).split('.')[0].replace(":", "_")
-        process1 = multiprocessing.Process(target=ecg_collection, args=(request_data, start, start_datetime,))
+        start_time = time.time()
+        process1 = multiprocessing.Process(target=ecg_collection, args=(request_data, start, start_datetime, start_time))
         process2 = multiprocessing.Process(target=task2)
         processes = [process1, process2]
         for process in processes:
