@@ -5,8 +5,9 @@ import os
 import datetime
 import time
 import serial
+from pyOpenBCI_v1 import OpenBCICyton
 
-COM_PORT = "COM3"
+COM_PORT_ECG = "COM3"
 BAUD_RATE = 115200
 
 SAVE_DIR = "DATA_FILES/"
@@ -15,22 +16,24 @@ processes = []  # to temporally maintain the running processes
 
 start = multiprocessing.Value('b', False)
 
+serialPortECG = serial.Serial(port=COM_PORT_ECG, baudrate=BAUD_RATE,
+                              bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
+print(serialPortECG)
+
 if not os.path.exists(SAVE_DIR):
     os.makedirs(SAVE_DIR)
 
 app = Flask(__name__)
 CORS(app)
 
-def ecg_collection(request_data, start, start_datetime, start_time):
+
+def ecg_collection(request_data, start, start_datetime, start_time, serialPort):
 
     data_points = []
-    
-    subject_id = str(request_data['subjectId'])
-    emotion = str(request_data['emotion'])    
-    print("Subject_" + subject_id + " started")
 
-    serialPort = serial.Serial(port=COM_PORT, baudrate=BAUD_RATE, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
-    print(serialPort)
+    subject_id = str(request_data['subjectId'])
+    emotion = str(request_data['emotion'])
+    print("Subject_" + subject_id + " started")
 
     while start.value:
         if (serialPort.in_waiting > 0):
@@ -61,7 +64,101 @@ def ecg_collection(request_data, start, start_datetime, start_time):
     print("file saved")
 
 
-def task2():
+def open_file_for_write():
+    now = datetime.now()
+    dt_string = now.strftime("%d_%m_%Y %H_%M_%S")
+    file_name = 'data/' + str(dt_string) + '.csv'
+
+    file = open(file_name, "w")
+    keys = "status, ch0, ch1, ch2, ch3, ch4, ch5, ch6, ch7 \n"
+    file.write(keys)
+    return file
+
+
+class Recording():
+
+    def __init__(self, FIFO: multiprocessing.Queue, start):
+        # create connection
+        comPortEEG = 'COMX'  # provide Port for EEG
+        self.board = OpenBCICyton(port=comPortEEG)
+        self.board.write_command('x1040010X')
+        self.board.write_command('x2040010X')
+        self.board.write_command('x3040010X')
+        self.board.write_command('x4040010X')
+        self.board.write_command('x5040010X')
+        self.board.write_command('x6040010X')
+        self.board.write_command('x7040010X')
+        self.board.write_command('x8040010X')
+        self.FIFO = FIFO
+        self.start = start
+        # self.terminate_signal = terminate_signal
+
+    def print_raw(self, sample):
+        # raw data save
+        now = datetime.now()
+        time = str(now.strftime("%M%S%f"))
+        raw = (time + ',' + str(sample.channels_data[0])+',' +
+               str(sample.channels_data[1])+',' +
+               str(sample.channels_data[2])+',' +
+               str(sample.channels_data[3])+',' +
+               str(sample.channels_data[4])+',' +
+               str(sample.channels_data[5])+',' +
+               str(sample.channels_data[6])+',' +
+               str(sample.channels_data[7]) + ' '
+               )
+
+        if self.start.value:
+            self.FIFO.put(raw)
+
+        if not self.start.value:
+            self.FIFO.close()
+            # self.start_signal.clear()
+            self.board.stop_stream()
+
+    def run(self):
+
+        # print data
+        print('run')
+        self.board.start_stream(self.print_raw)
+
+    def stop(self):
+        self.board.stop_stream()
+        print('stop stream')
+
+
+def recoding_call(FIFO: multiprocessing.Queue, start):
+    recode = Recording(FIFO=FIFO, start=start)
+    recode.run()
+
+
+def eeg_collection(start):
+    FIFO = multiprocessing.Queue()
+    # start_signal = multiprocessing.Event()
+    # terminate_signal = multiprocessing.Event()
+
+    recode = multiprocessing.Process(target=recoding_call, args=(
+        FIFO, start))
+    recode.start()
+
+    file = open_file_for_write()
+    while 1:
+        if FIFO.empty() == 0:
+            data = (str(FIFO.get())).split(',')
+            tem = (data[1] + ',' +
+                   data[2] + ',' +
+                   data[3] + ',' +
+                   data[4] + ',' +
+                   data[5] + ',' +
+                   data[6] + ',' +
+                   data[7] + ',' +
+                   data[8] + '\n')
+            file.write(tem)
+            if (start.value == False and FIFO.empty()):
+                file.close()
+                break
+        else:
+            pass
+
     print("Task 2 running")
     time.sleep(5)
     print("Task 2 Finished")
@@ -81,10 +178,13 @@ def start_processes():
     request_data = request.json
 
     if len(processes) == 0:
-        start_datetime = str(datetime.datetime.now()).split('.')[0].replace(":", "_")
+        start_datetime = str(datetime.datetime.now()).split('.')[
+            0].replace(":", "_")
         start_time = time.time()
-        process1 = multiprocessing.Process(target=ecg_collection, args=(request_data, start, start_datetime, start_time))
-        process2 = multiprocessing.Process(target=task2)
+        process1 = multiprocessing.Process(target=ecg_collection, args=(
+            request_data, start, start_datetime, start_time, serialPortECG,))
+        process2 = multiprocessing.Process(
+            target=eeg_collection, args=(start,))
         processes = [process1, process2]
         for process in processes:
             process.start()
