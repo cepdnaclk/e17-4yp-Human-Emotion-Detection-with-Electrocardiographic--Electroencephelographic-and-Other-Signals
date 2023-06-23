@@ -10,7 +10,8 @@ from pyOpenBCI_v1 import OpenBCICyton
 COM_PORT_ECG = "COM3"
 BAUD_RATE = 115200
 
-SAVE_DIR = "DATA_FILES/"
+SAVE_DIR_ECG = "DATA_FILES/ECG/"
+SAVE_DIR_EEG = "DATA_FILES/EEG/"
 
 processes = []  # to temporally maintain the running processes
 
@@ -20,8 +21,11 @@ serialPortECG = serial.Serial(port=COM_PORT_ECG, baudrate=BAUD_RATE,
                               bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
 print(serialPortECG)
 
-if not os.path.exists(SAVE_DIR):
-    os.makedirs(SAVE_DIR)
+if not os.path.exists(SAVE_DIR_ECG):
+    os.makedirs(SAVE_DIR_ECG)
+
+if not os.path.exists(SAVE_DIR_EEG):
+    os.makedirs(SAVE_DIR_EEG)
 
 app = Flask(__name__)
 CORS(app)
@@ -47,17 +51,17 @@ def ecg_collection(request_data, start, start_datetime, start_time, serialPort):
             except:
                 pass
 
-    print("writing to the file .....")
+    print("writing to the file ECG")
 
     # make directory for subject id, emotion inside the SAVE_DIR
-    if not os.path.exists(os.path.join(SAVE_DIR, "S-" + subject_id)):
-        os.makedirs(os.path.join(SAVE_DIR, "S-" + subject_id))
+    if not os.path.exists(os.path.join(SAVE_DIR_ECG, "S-" + subject_id)):
+        os.makedirs(os.path.join(SAVE_DIR_ECG, "S-" + subject_id))
 
-    if not os.path.exists(os.path.join(SAVE_DIR, "S-" + subject_id, emotion)):
-        os.makedirs(os.path.join(SAVE_DIR, "S-" + subject_id, emotion))
+    if not os.path.exists(os.path.join(SAVE_DIR_ECG, "S-" + subject_id, emotion)):
+        os.makedirs(os.path.join(SAVE_DIR_ECG, "S-" + subject_id, emotion))
 
     file_name = "S-" + subject_id + "_" + emotion + "_" + start_datetime + ".txt"
-    with open((os.path.join(SAVE_DIR, "S-" + subject_id, emotion, file_name)), 'w') as f:
+    with open((os.path.join(SAVE_DIR_ECG, "S-" + subject_id, emotion, file_name)), 'w') as f:
         for line in data_points:
             f.write(f"{line}\n")
 
@@ -65,9 +69,9 @@ def ecg_collection(request_data, start, start_datetime, start_time, serialPort):
 
 
 def open_file_for_write():
-    now = datetime.now()
+    now = datetime.datetime.now()
     dt_string = now.strftime("%d_%m_%Y %H_%M_%S")
-    file_name = 'data/' + str(dt_string) + '.csv'
+    file_name = SAVE_DIR_EEG + str(dt_string) + '.csv'
 
     file = open(file_name, "w")
     keys = "status, ch0, ch1, ch2, ch3, ch4, ch5, ch6, ch7 \n"
@@ -81,6 +85,7 @@ class Recording():
         # create connection
         comPortEEG = 'COMX'  # provide Port for EEG
         self.board = OpenBCICyton(port=comPortEEG)
+        print(self.board)
         self.board.write_command('x1040010X')
         self.board.write_command('x2040010X')
         self.board.write_command('x3040010X')
@@ -91,11 +96,9 @@ class Recording():
         self.board.write_command('x8040010X')
         self.FIFO = FIFO
         self.start = start
-        # self.terminate_signal = terminate_signal
 
     def print_raw(self, sample):
-        # raw data save
-        now = datetime.now()
+        now = datetime.datetime.now()
         time = str(now.strftime("%M%S%f"))
         raw = (time + ',' + str(sample.channels_data[0])+',' +
                str(sample.channels_data[1])+',' +
@@ -112,35 +115,27 @@ class Recording():
 
         if not self.start.value:
             self.FIFO.close()
-            # self.start_signal.clear()
             self.board.stop_stream()
+            print("Closing Stream")
 
     def run(self):
-
-        # print data
-        print('run')
+        print('Starting Stream')
         self.board.start_stream(self.print_raw)
-
-    def stop(self):
-        self.board.stop_stream()
-        print('stop stream')
-
 
 def recoding_call(FIFO: multiprocessing.Queue, start):
     recode = Recording(FIFO=FIFO, start=start)
     recode.run()
 
-
 def eeg_collection(start):
+    print("EEG Process Started")
     FIFO = multiprocessing.Queue()
-    # start_signal = multiprocessing.Event()
-    # terminate_signal = multiprocessing.Event()
 
     recode = multiprocessing.Process(target=recoding_call, args=(
         FIFO, start))
     recode.start()
 
     file = open_file_for_write()
+    print("File Opened For Write EEG")
     while 1:
         if FIFO.empty() == 0:
             data = (str(FIFO.get())).split(',')
@@ -153,15 +148,14 @@ def eeg_collection(start):
                    data[7] + ',' +
                    data[8] + '\n')
             file.write(tem)
-            if (start.value == False and FIFO.empty()):
-                file.close()
-                break
         else:
+            if (start.value == False):
+                file.close()
+                recode.terminate()
+                print("File Closing EEG")
+                break
             pass
-
-    print("Task 2 running")
-    time.sleep(5)
-    print("Task 2 Finished")
+    print("EEG Process Terminated")
 
 
 @app.route("/")
@@ -201,7 +195,6 @@ def end_processes():
     start.value = False  # to stop the data collection process
     if len(processes) > 0:
         for process in processes:
-            # process.terminate()
             process.join()
         # we can use join or terminate according to the requirement
         processes = []

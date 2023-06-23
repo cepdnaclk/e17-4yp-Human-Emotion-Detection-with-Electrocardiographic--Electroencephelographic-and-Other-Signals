@@ -2,3 +2,4 @@
 .vscode
 /code/DATA_FILES
 /code/prev/DATA_FILES
+/code/__pycache__
