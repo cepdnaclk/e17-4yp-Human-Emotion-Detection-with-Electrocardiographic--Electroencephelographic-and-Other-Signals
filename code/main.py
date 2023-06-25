@@ -81,9 +81,8 @@ def open_file_for_write():
 
 class Recording():
 
-    def __init__(self, FIFO: multiprocessing.Queue, start):
-        # create connection
-        comPortEEG = 'COMX'  # provide Port for EEG
+    def __init__(self, FIFO: multiprocessing.Queue, start, start_time):
+        comPortEEG = 'COMX'
         self.board = OpenBCICyton(port=comPortEEG)
         print(self.board)
         self.board.write_command('x1040010X')
@@ -96,11 +95,11 @@ class Recording():
         self.board.write_command('x8040010X')
         self.FIFO = FIFO
         self.start = start
+        self.start_time = start_time
 
     def print_raw(self, sample):
-        now = datetime.datetime.now()
-        time = str(now.strftime("%M%S%f"))
-        raw = (time + ',' + str(sample.channels_data[0])+',' +
+        elapsed_time = time.time() - self.start_time
+        raw = (str(format(elapsed_time, '.3f')) + ',' + str(sample.channels_data[0])+',' +
                str(sample.channels_data[1])+',' +
                str(sample.channels_data[2])+',' +
                str(sample.channels_data[3])+',' +
@@ -122,16 +121,16 @@ class Recording():
         print('Starting Stream')
         self.board.start_stream(self.print_raw)
 
-def recoding_call(FIFO: multiprocessing.Queue, start):
-    recode = Recording(FIFO=FIFO, start=start)
+def recoding_call(FIFO: multiprocessing.Queue, start, start_time):
+    recode = Recording(FIFO=FIFO, start=start, start_time=start_time)
     recode.run()
 
-def eeg_collection(start):
+def eeg_collection(start, start_time):
     print("EEG Process Started")
     FIFO = multiprocessing.Queue()
 
     recode = multiprocessing.Process(target=recoding_call, args=(
-        FIFO, start))
+        FIFO, start, start_time,))
     recode.start()
 
     file = open_file_for_write()
@@ -139,7 +138,8 @@ def eeg_collection(start):
     while 1:
         if FIFO.empty() == 0:
             data = (str(FIFO.get())).split(',')
-            tem = (data[1] + ',' +
+            tem = (data[0] + ',' +
+                   data[1] + ',' +
                    data[2] + ',' +
                    data[3] + ',' +
                    data[4] + ',' +
@@ -178,7 +178,7 @@ def start_processes():
         process1 = multiprocessing.Process(target=ecg_collection, args=(
             request_data, start, start_datetime, start_time, serialPortECG,))
         process2 = multiprocessing.Process(
-            target=eeg_collection, args=(start,))
+            target=eeg_collection, args=(start, start_time,))
         processes = [process1, process2]
         for process in processes:
             process.start()
