@@ -7,19 +7,14 @@ import time
 import serial
 from pyOpenBCI_v1 import OpenBCICyton
 
-COM_PORT_ECG = "COM3"
-BAUD_RATE = 115200
-
 SAVE_DIR_ECG = "DATA_FILES/ECG/"
 SAVE_DIR_EEG = "DATA_FILES/EEG/"
 
 processes = []  # to temporally maintain the running processes
 
 start = multiprocessing.Value('b', False)
-
-serialPortECG = serial.Serial(port=COM_PORT_ECG, baudrate=BAUD_RATE,
-                              bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
-print(serialPortECG)
+startFileWrite = multiprocessing.Value('b', False)
+start_time = multiprocessing.Value('f', time.time())
 
 if not os.path.exists(SAVE_DIR_ECG):
     os.makedirs(SAVE_DIR_ECG)
@@ -31,19 +26,25 @@ app = Flask(__name__)
 CORS(app)
 
 
-def ecg_collection(request_data, start, start_datetime, start_time, serialPort):
+def ecg_collection(request_data, start, startFileWrite, start_datetime, start_time):
+    COM_PORT_ECG = "COM12"
+    BAUD_RATE = 115200
 
     data_points = []
+    serialPortECG = serial.Serial(port=COM_PORT_ECG, baudrate=BAUD_RATE,
+                                  bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
+
+    print(serialPortECG)
 
     subject_id = str(request_data['subjectId'])
     emotion = str(request_data['emotion'])
     print("Subject_" + subject_id + " started")
 
     while start.value:
-        if (serialPort.in_waiting > 0):
+        if (serialPortECG.in_waiting > 0) and startFileWrite.value:
             # Read data out of the buffer until a new line is found
-            serial_string = serialPort.readline()
-            elapsed_time = time.time() - start_time
+            serial_string = serialPortECG.readline()
+            elapsed_time = time.time() - start_time.value
 
             try:
                 data_points.append(
@@ -81,10 +82,8 @@ def open_file_for_write():
 
 class Recording():
 
-    def __init__(self, FIFO: multiprocessing.Queue, start, start_time):
-        comPortEEG = 'COMX'
-        self.board = OpenBCICyton(port=comPortEEG)
-        print(self.board)
+    def __init__(self, FIFO: multiprocessing.Queue, start, startFileWrite, start_time):
+        self.board = OpenBCICyton()
         self.board.write_command('x1040010X')
         self.board.write_command('x2040010X')
         self.board.write_command('x3040010X')
@@ -95,10 +94,11 @@ class Recording():
         self.board.write_command('x8040010X')
         self.FIFO = FIFO
         self.start = start
+        self.startFileWrite = startFileWrite
         self.start_time = start_time
 
     def print_raw(self, sample):
-        elapsed_time = time.time() - self.start_time
+        elapsed_time = time.time() - self.start_time.value
         raw = (str(format(elapsed_time, '.3f')) + ',' + str(sample.channels_data[0])+',' +
                str(sample.channels_data[1])+',' +
                str(sample.channels_data[2])+',' +
@@ -108,8 +108,7 @@ class Recording():
                str(sample.channels_data[6])+',' +
                str(sample.channels_data[7]) + ' '
                )
-
-        if self.start.value:
+        if self.start.value and self.startFileWrite.value:
             self.FIFO.put(raw)
 
         if not self.start.value:
@@ -121,16 +120,19 @@ class Recording():
         print('Starting Stream')
         self.board.start_stream(self.print_raw)
 
-def recoding_call(FIFO: multiprocessing.Queue, start, start_time):
-    recode = Recording(FIFO=FIFO, start=start, start_time=start_time)
+
+def recoding_call(FIFO: multiprocessing.Queue, start, startFileWrite, start_time):
+    recode = Recording(FIFO=FIFO, start=start,
+                       startFileWrite=startFileWrite, start_time=start_time)
     recode.run()
 
-def eeg_collection(start, start_time):
+
+def eeg_collection(start, startFileWrite, start_time):
     print("EEG Process Started")
     FIFO = multiprocessing.Queue()
 
     recode = multiprocessing.Process(target=recoding_call, args=(
-        FIFO, start, start_time,))
+        FIFO, start, startFileWrite, start_time,))
     recode.start()
 
     file = open_file_for_write()
@@ -167,6 +169,8 @@ def home():
 def start_processes():
     global processes
     global start
+    global startFileWrite
+    global start_time
 
     start.value = True  # to start the data collection process
     request_data = request.json
@@ -174,17 +178,28 @@ def start_processes():
     if len(processes) == 0:
         start_datetime = str(datetime.datetime.now()).split('.')[
             0].replace(":", "_")
-        start_time = time.time()
         process1 = multiprocessing.Process(target=ecg_collection, args=(
-            request_data, start, start_datetime, start_time, serialPortECG,))
+            request_data, start, startFileWrite, start_datetime, start_time,))
         process2 = multiprocessing.Process(
-            target=eeg_collection, args=(start, start_time,))
+            target=eeg_collection, args=(start, startFileWrite, start_time,))
         processes = [process1, process2]
         for process in processes:
             process.start()
         return "Started two new processes."
     else:
         return "Processes are already running."
+
+
+@app.route('/startWrite', methods=['POST'])
+def start_write():
+    global start
+    global startFileWrite
+    global start_time
+
+    if start.value:
+        startFileWrite.value = True
+        start_time.value = time.time()
+    return "Started"
 
 
 @app.route('/stop', methods=['POST'])
