@@ -1,13 +1,19 @@
 import { Button, Card, Col, Form, Input, Row, Select } from "antd";
 import { emotions } from "../utils/emotionConstants";
-import backgroundImage from "../images/background.webp";
 import { postReq } from "../_http/api";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function StartForm() {
-  const [participantNumber, setParticipantNumber] = useState();
-  const [emotion, setEmotion] = useState("");
 
+  const videoRef = useRef(null);
+  const [participantNumber, setParticipantNumber] = useState();
+  const [emotion, setEmotion] = useState(emotions[0].value);
+  const [video, setVideo] = useState(emotions[0].video);
+
+  const onEndHandler = e => {
+    videoRef.current.webkitExitFullscreen();
+    postReq("stopWrite");
+  }
   const handleBeginProgram = () => {
     postReq("start");
   };
@@ -21,10 +27,10 @@ export default function StartForm() {
       emotion: emotion,
     };
     postReq("startWrite", data);
+    videoRef.current.play()
+    videoRef.current.requestFullscreen()
   };
-  const handleStop = () => {
-    postReq("stopWrite");
-  };
+ 
   return (
     <Row>
       <Col sm={24} md={12} lg={8}>
@@ -117,9 +123,11 @@ export default function StartForm() {
             >
               <Select
                 placeholder="Select the Emotion"
-                value={emotion}
                 onChange={(event) => {
                   setEmotion(event);
+                  const entry = emotions.filter(emotion => emotion.value === event);
+                  console.log(entry[0].video)
+                  setVideo(entry[0].video)
                 }}
                 allowClear
               >
@@ -131,32 +139,7 @@ export default function StartForm() {
               </Select>
             </Form.Item>
             <Row gutter={[5, 5]}>
-              <Col span={12}>
-                <Form.Item
-                  wrapperCol={{}}
-                  style={
-                    {
-                      //   paddingLeft: "33.5%",
-                    }
-                  }
-                >
-                  <Button
-                    type="primary"
-                    danger
-                    style={{ width: "80%", marginLeft: 40, marginTop: 40 }}
-                  >
-                    Stop
-                  </Button>
-                  {/* <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ width: "100%", backgroundColor: "green" }}
-                >
-                  Begin
-                </Button> */}
-                </Form.Item>
-              </Col>
-              <Col span={12}>
+              <Col span={24}>
                 <Form.Item
                   wrapperCol={{}}
                   style={
@@ -169,17 +152,10 @@ export default function StartForm() {
                     type="primary"
                     htmlType="submit"
                     onClick={handleStart}
-                    style={{ width: "80%", marginLeft: 40, marginTop: 40 }}
+                    style={{ width: "100%", marginTop: 40 }}
                   >
                     Start
                   </Button>
-                  {/* <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ width: "100%", backgroundColor: "green" }}
-                >
-                  Begin
-                </Button> */}
                 </Form.Item>
               </Col>
             </Row>
@@ -193,10 +169,22 @@ export default function StartForm() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            minHeight: "100vh",
-            backgroundImage: `url(${backgroundImage})`,
+            minHeight: "100vh"
           }}
-        ></div>
+        >
+          {
+            emotions.map(emotionOfEmotions => {
+              if (emotionOfEmotions.value === emotion) {
+                return (
+                  <video width="480" height="300" controls ref={videoRef} onEnded={onEndHandler}>
+                    <source src={video} type="video/mp4" />
+                    Sorry, your browser doesn't support videos.
+                  </video>
+                )
+              }
+            })
+          }
+        </div>
       </Col>
     </Row>
   );

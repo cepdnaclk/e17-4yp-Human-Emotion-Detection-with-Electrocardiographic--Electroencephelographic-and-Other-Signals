@@ -3,18 +3,24 @@ import { useRef } from "react";
 import './App.css';
 
 function App() {
-  const vedioRef = useRef(null);
+  const videoRef = useRef(null);
   const onPlayButtonClickHandler = e => {
-    vedioRef.current.play()
+    videoRef.current.play()
+    videoRef.current.requestFullscreen()
   }
   const onPauseButtonClickHandler = e => {
-    vedioRef.current.pause()
+    videoRef.current.pause()
   }
+
+  const onEndHandler = e => {
+    videoRef.current.webkitExitFullscreen();
+  }
+
   return (
     <React.Fragment>
-      <h1 style={{textAlign: 'center', margin: '10px 0px 0px 0px'}}>Vedio</h1>
+      <h1 style={{ textAlign: 'center', margin: '10px 0px 0px 0px' }}>Video</h1>
       <div className='container-div'>
-        <video width="480" height="300" controls ref={vedioRef}>
+        <video width="480" height="300" controls ref={videoRef} onEnded={onEndHandler}>
           <source src="/vedios/mov_bbb.mp4" type="video/mp4" />
           Sorry, your browser doesn't support videos.
         </video>
