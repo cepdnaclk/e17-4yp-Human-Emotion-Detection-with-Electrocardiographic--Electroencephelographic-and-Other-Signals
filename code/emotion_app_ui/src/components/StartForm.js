@@ -188,6 +188,7 @@ export default function StartForm() {
                 </video>
               );
             }
+            return null
           })}
         </div>
       </Col>

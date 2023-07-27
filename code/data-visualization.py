@@ -18,7 +18,7 @@ def read(file):
 
 
 ecg_signal = read(
-    'DATA_FILES/ECG/2/ecg_2_RELAXATION_2023-07-07 13_25_46.txt')
+    'DATA_FILES/ECG/91/ecg_91_SAD_2023-07-28 02_32_43.txt')
 
 
 figure(figsize=(10, 5), dpi=100)

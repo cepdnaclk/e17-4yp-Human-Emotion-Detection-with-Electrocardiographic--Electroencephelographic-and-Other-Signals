@@ -31,7 +31,7 @@ CORS(app)
 
 
 def ecg_collection(start, startFileWrite, start_time, start_datetime, participant_number, emotion,):
-    COM_PORT_ECG = "COM15"
+    COM_PORT_ECG = "COM7"
     BAUD_RATE = 115200
 
     data_points = []
@@ -40,8 +40,6 @@ def ecg_collection(start, startFileWrite, start_time, start_datetime, participan
                                   bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
 
     print(serialPortECG)
-
-    # print("Subject_" + str(participant_number) + " started")
 
     while start.value:
         while startFileWrite.value:
@@ -187,7 +185,7 @@ def start_processes():
             start, startFileWrite, start_time, start_datetime, participant_number, emotion,))
         process2 = multiprocessing.Process(target=eeg_collection, args=(
             start, startFileWrite, start_time, start_datetime, participant_number, emotion, skip,))
-        processes = [process1]
+        processes = [process1, process2]
         for process in processes:
             process.start()
         return "Started two new processes."
