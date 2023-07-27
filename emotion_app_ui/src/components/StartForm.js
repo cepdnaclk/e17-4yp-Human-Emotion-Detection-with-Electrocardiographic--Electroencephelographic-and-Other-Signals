@@ -143,6 +143,7 @@ export default function StartForm() {
                   <Button
                     type="primary"
                     danger
+                    onClick={handleStop}
                     style={{ width: "80%", marginLeft: 40, marginTop: 40 }}
                   >
                     Stop
