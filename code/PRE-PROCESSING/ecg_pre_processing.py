@@ -210,7 +210,7 @@ def read_old(file):
     return data
 
 
-ecg_signal = read(DATA_DIR+'ECG/91/ecg_91_SAD_2023-07-28 02_26_51.txt')
+ecg_signal = read(DATA_DIR+'ECG/405/perfect_1.txt')
 ecg_signal_1 = ecg_signal[0:40000]
 
 print(len(ecg_signal_1))

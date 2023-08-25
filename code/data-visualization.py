@@ -18,8 +18,7 @@ def read(file):
 
 
 ecg_signal = read(
-    'DATA_FILES/ECG/91/ecg_91_SAD_2023-07-28 02_32_43.txt')
-
+    'DATA_FILES/ECG/405/perfect_2.txt')
 
 figure(figsize=(10, 5), dpi=100)
 plt.plot(ecg_signal, 'b')
