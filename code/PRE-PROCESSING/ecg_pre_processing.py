@@ -9,15 +9,18 @@ from peakutils.peak import indexes
 DATA_DIR = "../DATA_FILES/"
 
 data = []
+
+
 def read(file):
     print("reading ...")
     with open(file, 'r') as FP:
         for x in FP:
-            values = x.split(':') 
-            if (len(values) == 2 and (values[1].rstrip('\r\n'))!=''):
+            values = x.split(':')
+            if (len(values) == 2 and (values[1].rstrip('\r\n')) != ''):
                 data.append(int(values[1].rstrip('\r\n')))
         # data = [int() for x in FP]
     return data
+
 
 def butter_bandpass(lowcut, highcut, fs, order=5):
     '''
@@ -34,6 +37,7 @@ def butter_bandpass(lowcut, highcut, fs, order=5):
     b, a = butter(order, [low, high], btype='band')
     return b, a
 
+
 def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
     '''
     Filter the signal using the BW filter
@@ -47,6 +51,7 @@ def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
     b, a = butter_bandpass(lowcut, highcut, fs, order=order)
     y = lfilter(b, a, data)
     return y
+
 
 def de_trend(signal_in):
     '''
@@ -63,6 +68,7 @@ def de_trend(signal_in):
                                          int(7 * len(signal_in) / 8),
                                          ])
 
+
 def smooth(x, window_len=11, window='hanning'):
     '''
     Smooth a given signal
@@ -78,7 +84,8 @@ def smooth(x, window_len=11, window='hanning'):
         return x
 
     if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
-        raise (ValueError, "Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
+        raise (
+            ValueError, "Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
 
     s = numpy.r_[x[window_len - 1:0:-1], x, x[-2:-window_len - 1:-1]]
     # print(len(s))
@@ -106,10 +113,10 @@ def normalize(ecg_signal):
 def pre_processing(ecg_signal):
     y_t = butter_bandpass_filter(ecg_signal, 0.05, 100, 1000, order=2)
     signal_de_trend = de_trend(y_t)
-    smoothed = smooth(numpy.array(signal_de_trend), window_len=20, window='hamming')[:len(ecg_signal)]
+    smoothed = smooth(numpy.array(signal_de_trend),
+                      window_len=20, window='hamming')[:len(ecg_signal)]
     return normalize(smoothed)
     # return smoothed
-
 
 
 def find_r(ecg_signal, md=550):
@@ -170,6 +177,7 @@ def get_t(wave, s):
     max_ = sort_[-1]
     return wave.index(max_), max_
 
+
 def get_p_q_s_t_index(wave, index_r):
     '''
     From a given wave and a R index get the PQST positions of the signal
@@ -185,7 +193,7 @@ def get_p_q_s_t_index(wave, index_r):
     return index_r - (200 - p_index), index_r - (200 - q_index), s_index - 200 + index_r, index_r + (t_index - 200)
 
 
-def segment_wave(index_r,ecg_signal,left_thr,right_thr):
+def segment_wave(index_r, ecg_signal, left_thr, right_thr):
     '''
     Segment out a PQRST wave from a signal
 
@@ -210,14 +218,14 @@ def read_old(file):
     return data
 
 
-ecg_signal = read(DATA_DIR+'ECG/405/perfect_1.txt')
+ecg_signal = read(DATA_DIR+'ECG/1001/ecg_1001_NEUTRAL_2023-08-28 14_16_35.txt')
 ecg_signal_1 = ecg_signal[0:40000]
 
 print(len(ecg_signal_1))
 
-t1=time.time()
+t1 = time.time()
 pre_pr_ecg = pre_processing(ecg_signal_1)
-print ('pre-pr- time = ', time.time()-t1)
+print('pre-pr- time = ', time.time()-t1)
 
 # figure(figsize=(10, 5), dpi=100)
 # plt.plot(pre_pr_ecg, 'g')
@@ -244,7 +252,7 @@ for rr_idx in index_r:
     wave = segment_wave(rr_idx, pre_pr_ecg, 200, 300)
     if wave is None:
         rem_from_r.append(index_count)
-        print ('Full wave not found')
+        print('Full wave not found')
     else:
         p, q, s, t = get_p_q_s_t_index(wave, rr_idx)
         index_p.append(p)

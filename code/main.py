@@ -31,7 +31,7 @@ CORS(app)
 
 
 def ecg_collection(start, startFileWrite, start_time, start_datetime, participant_number, emotion,):
-    COM_PORT_ECG = "COM7"
+    COM_PORT_ECG = "COM15"
     BAUD_RATE = 115200
 
     data_points = []
