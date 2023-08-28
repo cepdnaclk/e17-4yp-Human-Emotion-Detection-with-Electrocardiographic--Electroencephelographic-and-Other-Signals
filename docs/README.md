@@ -41,6 +41,19 @@ title: Human Emotion Detection with Electrocardiographic-Electroencephelographic
 
 ## Methodology
 
+1. Read the information sheet
+   - [sheet](https://docs.google.com/document/d/1kH4Qc642DGC6JXFG4AZ8_8hR5N0Sukr8RF1XjaJ_s2U/edit)
+2. Do the pre experiment survey
+
+   - [survey](https://docs.google.com/forms/d/159UrWMTyQSBFsr8FpqdQPyroBx9M8aOTMMyBRhh_llw/edit)
+   - [form](https://docs.google.com/forms/d/e/1FAIpQLSewSYhT5gAMh9bNCn5KEJD6RPty2wUojrs8no-RuE5fgjSv6w/viewform)
+
+3. Show audio,video stimuli
+   - show video and after each video collect the relavency
+4. Do the post experiment survey
+   - [post-survey](https://docs.google.com/forms/d/1xBQGSMX8E0xwirf9TI3quZkNTzM6fy-OmZg3ap8ZGX0/edit)
+   - [form](https://docs.google.com/forms/d/e/1FAIpQLScAYqNibYVf16e_Ot6wFv2-LuvqbFBnrWLDJkyoghvEkMZi2g/viewform)
+
 ## Experiment Setup and Implementation
 
 ## Results and Analysis
@@ -55,4 +68,3 @@ title: Human Emotion Detection with Electrocardiographic-Electroencephelographic
 - [Project Page](https://cepdnaclk.github.io/e17-4yp-Human-Emotion-Detection-with-Electrocardiographic--Electroencephelographic-and-Other-Signals)
 - [Department of Computer Engineering](http://www.ce.pdn.ac.lk/)
 - [University of Peradeniya](https://eng.pdn.ac.lk/)
-
