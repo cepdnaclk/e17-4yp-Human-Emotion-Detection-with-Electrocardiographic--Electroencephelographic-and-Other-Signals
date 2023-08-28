@@ -1,6 +1,6 @@
 .idea
 .vscode
-# /code/DATA_FILES
+/code/DATA_FILES
 /code/prev/DATA_FILES
 /code/__pycache__
 /code/test
