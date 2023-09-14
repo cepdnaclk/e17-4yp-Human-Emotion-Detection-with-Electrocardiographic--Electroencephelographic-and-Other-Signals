@@ -114,8 +114,8 @@ class Recording():
         file_name = "eeg_" + str(self.participant_number.value) + "_" + \
             self.emotion.value.decode() + "_" + self.start_datetime.value.decode() + '.csv'
 
-        if self.start.value and not self.startFileWrite.value and not os.path.exists(os.path.join(SAVE_DIR_EEG, str(
-                self.participant_number.value), file_name)) and not self.skip.value:
+        if self.start.value and not self.startFileWrite.value and not self.skip.value and not os.path.exists(os.path.join(SAVE_DIR_EEG, str(
+                self.participant_number.value), file_name)):
             file = open((os.path.join(SAVE_DIR_EEG, str(
                 self.participant_number.value), file_name)), "w")
             keys = "status, ch0, ch1, ch2, ch3, ch4, ch5, ch6, ch7 \n"
@@ -124,8 +124,10 @@ class Recording():
             print("File Opened For Write EEG")
 
             while 1:
-                if self.FIFO.empty() == 0:
+                if self.FIFO.qsize() > 0:
                     data = (str(self.FIFO.get())).split(',')
+                    if data is None:
+                        pass
                     tem = (data[0] + ',' +
                            data[1] + ',' +
                            data[2] + ',' +
@@ -137,8 +139,9 @@ class Recording():
                            data[8] + '\n')
                     file.write(tem)
                 else:
-                    if (self.startFileWrite.value == False):
+                    if (self.FIFO.qsize() == 0):
                         file.close()
+                        print(self.FIFO.qsize())
                         print("File Closing EEG")
                         break
                     pass
