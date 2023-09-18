@@ -10,7 +10,7 @@ def read(file):
     print("reading ...")
     with open(file, 'r') as FP:
         for x in FP:
-            values = x.split(':')
+            values = x.split(',')
             if (len(values) == 2 and (values[1].rstrip('\r\n')) != ''):
                 data.append(int(values[1].rstrip('\r\n')))
         # data = [int() for x in FP]
@@ -18,7 +18,7 @@ def read(file):
 
 
 ecg_signal = read(
-    'DATA_FILES/ECG/1001/ecg_1001_NEUTRAL_2023-08-28 14_54_03.txt')
+    '../DATA_ACQUSITION_BACKEND/DATA_FILES/ECG/111111/ecg_111111_HAPPY_2023-09-18 15_35_49.txt')
 
 figure(figsize=(10, 5), dpi=100)
 plt.plot(ecg_signal, 'b')

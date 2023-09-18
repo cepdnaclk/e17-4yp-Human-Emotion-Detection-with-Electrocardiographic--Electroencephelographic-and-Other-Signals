@@ -46,11 +46,10 @@ def ecg_collection(start, startFileWrite, start_time, start_datetime, participan
             if (serialPortECG.in_waiting > 0):
                 # Read data out of the buffer until a new line is found
                 serial_string = serialPortECG.readline()
-                elapsed_time = time.time() - start_time.value
 
                 try:
                     data_points.append(
-                        str(format(elapsed_time, '.3f')) + ":" + str(serial_string.decode('Ascii').rstrip('\r\n')))
+                        str(serial_string.decode('Ascii').rstrip('\r\n')))
                 except:
                     pass
         if len(data_points) > 0:
@@ -94,8 +93,7 @@ class Recording():
 
     def print_raw(self, sample):
 
-        elapsed_time = time.time() - self.start_time.value
-        raw = (str(format(elapsed_time, '.3f')) + ',' + str(sample.channels_data[0])+',' +
+        raw = (str(sample.channels_data[0])+',' +
                str(sample.channels_data[1])+',' +
                str(sample.channels_data[2])+',' +
                str(sample.channels_data[3])+',' +
@@ -118,7 +116,7 @@ class Recording():
                 self.participant_number.value), file_name)):
             file = open((os.path.join(SAVE_DIR_EEG, str(
                 self.participant_number.value), file_name)), "w")
-            keys = "status, ch0, ch1, ch2, ch3, ch4, ch5, ch6, ch7 \n"
+            keys = "ch0, ch1, ch2, ch3, ch4, ch5, ch6, ch7 \n"
             file.write(keys)
 
             print("File Opened For Write EEG")
@@ -135,8 +133,7 @@ class Recording():
                            data[4] + ',' +
                            data[5] + ',' +
                            data[6] + ',' +
-                           data[7] + ',' +
-                           data[8] + '\n')
+                           data[7] + '\n')
                     file.write(tem)
                 else:
                     if (self.FIFO.qsize() == 0):
