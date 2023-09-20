@@ -15,9 +15,9 @@ def read(file):
     print("reading ...")
     with open(file, 'r') as FP:
         for x in FP:
-            values = x.split(':')
-            if (len(values) == 2 and (values[1].rstrip('\r\n')) != ''):
-                data.append(int(values[1].rstrip('\r\n')))
+            # values = x.split(':')
+            # if (len(values) == 2 and (values[1].rstrip('\r\n')) != ''):
+            data.append(int(x.rstrip('\r\n')))
         # data = [int() for x in FP]
     return data
 
@@ -218,8 +218,9 @@ def read_old(file):
     return data
 
 
-ecg_signal = read(DATA_DIR+'ECG/1001/ecg_1001_NEUTRAL_2023-08-28 14_16_35.txt')
-ecg_signal_1 = ecg_signal[0:40000]
+ecg_signal = read(
+    '../DATA_ACQUSITION_BACKEND/DATA_FILES/ECG/184052/ecg_184052_NEUTRAL_2023-09-20 11_43_35.txt')
+ecg_signal_1 = ecg_signal[0:100000]
 
 print(len(ecg_signal_1))
 
