@@ -219,7 +219,7 @@ def read_old(file):
 
 
 ecg_signal = read(
-    '../DATA_ACQUSITION_BACKEND/DATA_FILES/ECG/184052/ecg_184052_NEUTRAL_2023-09-20 11_43_35.txt')
+    '../DATA_ACQUSITION_BACKEND/DATA_FILES/ECG/19405/ecg_19405_HAPPY_2023-09-20 15_57_10.txt')
 ecg_signal_1 = ecg_signal[0:100000]
 
 print(len(ecg_signal_1))
