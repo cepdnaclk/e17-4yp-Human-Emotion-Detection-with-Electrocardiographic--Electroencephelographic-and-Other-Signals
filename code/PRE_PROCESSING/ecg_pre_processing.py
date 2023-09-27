@@ -219,7 +219,7 @@ def read_old(file):
 
 
 ecg_signal = read(
-    '../DATA_ACQUSITION_BACKEND/DATA_FILES/ECG/19405/ecg_19405_HAPPY_2023-09-20 15_57_10.txt')
+    '../DATA_ACQUSITION_BACKEND/DATA_FILES/ECG/1002/ecg_1002_HAPPY_2023-09-21 15_31_35.txt')
 ecg_signal_1 = ecg_signal[0:100000]
 
 print(len(ecg_signal_1))
@@ -238,7 +238,7 @@ print('pre-pr- time = ', time.time()-t1)
 
 index_r, value = find_r(pre_pr_ecg)
 len(index_r)
-print(index_r)
+# print(index_r)
 
 
 index_p = []
