@@ -4,3 +4,13 @@
 /code/prev/DATA_FILES
 /code/__pycache__
 /code/test
+/code/temp/dreamer_classification/DREAMER
+/code/temp/dreamer_classification/labels.txt
+/code/temp/dreamer_classification/ECG_a.txt
+/code/temp/dreamer_classification/ECG_b.txt
+/code/temp/dreamer_classification/test_a.txt
+/code/temp/dreamer_classification/test_b.txt
+/code/temp/dreamer_classification/test_labels.txt
+/code/temp/dreamer_classification/train_a.txt
+/code/temp/dreamer_classification/train_b.txt
+/code/temp/dreamer_classification/train_labels.txt
