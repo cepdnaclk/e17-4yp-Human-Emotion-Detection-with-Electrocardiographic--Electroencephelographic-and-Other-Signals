@@ -57,3 +57,8 @@
 /code/temp/dreamer_classification/EEG_l.txt
 /code/temp/dreamer_classification/EEG_m.txt
 /code/temp/dreamer_classification/EEG_n.txt
+
+/code/temp/pca/PCA_Column
+/code/temp/pca/PCA_EEG
+/code/temp/pca/PCA_Labels
+/code/temp/pca/Train_Test_Data

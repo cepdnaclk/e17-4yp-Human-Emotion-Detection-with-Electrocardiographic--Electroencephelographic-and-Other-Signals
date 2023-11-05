@@ -45,14 +45,14 @@ def load_group(filenames, prefix=''):
 
 
 def load_dataset_group(group):
-    filepath = ''
+    filepath = './Train_Test_Data/'
     # load all 9 files as a single array
     filenames = list()
     filenames += [group + '_a.txt', group + '_b.txt']
     # load input data
     X = load_group(filenames, filepath)
     # load class output
-    y = load_file(group + '_labels.txt')
+    y = load_file('./Train_Test_Data/' + group + '_labels.txt')
     return X, y
 
 
