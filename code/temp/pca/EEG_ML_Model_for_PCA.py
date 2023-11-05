@@ -29,6 +29,7 @@ def evaluate_model(trainX, trainy, testX, testy):
     _, accuracy = model.evaluate(testX, testy, batch_size=batch_size, verbose=0)
     return accuracy
 
+
 def load_file(filepath):
     dataFrame = read_csv(filepath, header=None, delim_whitespace=True)
     return dataFrame.values
@@ -42,16 +43,18 @@ def load_group(filenames, prefix=''):
     loaded = dstack(loaded)
     return loaded
 
+
 def load_dataset_group(group):
-    filepath = ''
+    filepath = './Train_Test_Data/'
     # load all 9 files as a single array
     filenames = list()
     filenames += [group + '_a.txt', group + '_b.txt']
     # load input data
     X = load_group(filenames, filepath)
     # load class output
-    y = load_file(group + '_labels.txt')
+    y = load_file('./Train_Test_Data/' + group + '_labels.txt')
     return X, y
+
 
 def load_dataset():
     # load all train
@@ -69,10 +72,12 @@ def load_dataset():
     print(trainX.shape, trainy.shape, testX.shape, testy.shape)
     return trainX, trainy, testX, testy
 
+
 def summarize_results(scores):
     print(scores)
     m, s = mean(scores), std(scores)
     print('Accuracy: %.3f%% (+/-%.3f)' % (m, s))
+
 
 def run_experiment(repeats=10):
     # load data
@@ -87,5 +92,6 @@ def run_experiment(repeats=10):
         scores.append(score)
     # summarize results
     summarize_results(scores)
+
 
 run_experiment()
