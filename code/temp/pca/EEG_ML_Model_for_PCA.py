@@ -31,7 +31,7 @@ def evaluate_model(trainX, trainy, testX, testy):
 
 
 def load_file(filepath):
-    dataFrame = read_csv(filepath, header=None, delim_whitespace=True)
+    dataFrame = read_csv(filepath, header=None, delim_whitespace=True, engine='python')
     return dataFrame.values
 
 def load_group(filenames, prefix=''):
@@ -79,7 +79,7 @@ def summarize_results(scores):
     print('Accuracy: %.3f%% (+/-%.3f)' % (m, s))
 
 
-def run_experiment(repeats=10):
+def run_experiment(repeats=1):
     # load data
     trainX, trainy, testX, testy = load_dataset()
     print('Finished Loading the Data')

@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from sklearn.decomposition import PCA
+# from sklearn.preprocessing import StandardScaler
 
 for i in range(23):
     for j in range(18):

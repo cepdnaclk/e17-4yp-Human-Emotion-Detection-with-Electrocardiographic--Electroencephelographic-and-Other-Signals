@@ -1,3 +1,4 @@
+import os
 import random
 
 # Define the input files and the output files
@@ -11,6 +12,9 @@ test_data_file1 = "./Train_Test_Data/test_a.txt"
 test_data_file2 = "./Train_Test_Data/test_b.txt"
 test_labels_file = "./Train_Test_Data/test_labels.txt"
 
+output_directory = 'Train_Test_Data'
+if not os.path.exists(output_directory):
+    os.makedirs(output_directory)
 # Open the input files and read the data and labels
 with open(data_file1, 'r') as data_file1,open(data_file2, 'r') as data_file2, open(labels_file, 'r') as labels_file:
     data_lines1 = data_file1.readlines()

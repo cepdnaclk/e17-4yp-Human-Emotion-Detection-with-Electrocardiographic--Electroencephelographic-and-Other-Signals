@@ -1,3 +1,4 @@
+import os
 import csv
 
 for i in range (23):
@@ -12,6 +13,10 @@ for i in range (23):
 
             selected_data_a = original_data_a[-15360:]
             data_string_a = " ".join(selected_data_a)
+
+            output_directory = 'PCA_Column'
+            if not os.path.exists(output_directory):
+                os.makedirs(output_directory)
             with open('PCA_Column/PCA_a.txt', 'a') as textfile_a:
                 textfile_a.write(data_string_a + "\n")
 
