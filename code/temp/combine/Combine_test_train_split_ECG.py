@@ -23,7 +23,7 @@ with open(data_file1, 'r') as data_file1,open(data_file2, 'r') as data_file2, op
 
 # Shuffle the data and labels randomly
 combined_data = list(zip(data_lines1,data_lines2, label_lines))
-random.shuffle(combined_data)
+#random.shuffle(combined_data)
 
 # Calculate the split point
 total_lines = len(combined_data)
