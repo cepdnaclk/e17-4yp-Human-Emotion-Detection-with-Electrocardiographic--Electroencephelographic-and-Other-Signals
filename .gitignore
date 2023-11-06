@@ -68,3 +68,8 @@
 /code/temp/combine/ECG
 /code/temp/combine/Labels
 /code/temp/combine/Train_Test_Data_ECG
+/code/temp/combine/Train_Test_Data_EEG
+/code/temp/combine/PCA_EEG
+/code/temp/combine/EEG
+
+

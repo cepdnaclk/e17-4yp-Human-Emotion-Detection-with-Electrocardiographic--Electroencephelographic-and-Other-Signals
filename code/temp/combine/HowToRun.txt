@@ -7,8 +7,10 @@ for ECG
     #Finished
     
 for EEG 
-    run the pca.py file
-    #not Finished 
+    run the Combine_pca.py file
+    run Combine_EEG_data_division
+    run Combine_test_train_split_EEG
+    #Finished 
 
 #Not Finished
 run the combine_model.py
