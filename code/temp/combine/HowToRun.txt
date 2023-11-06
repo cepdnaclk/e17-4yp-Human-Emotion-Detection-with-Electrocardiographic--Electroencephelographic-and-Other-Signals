@@ -1,0 +1,14 @@
+Generally
+    run the labeling file 
+
+for ECG 
+    run the ecg_data.py file
+    run the Combine_test_train_split_ECG.py fie 
+    #Finished
+    
+for EEG 
+    run the pca.py file
+    #not Finished 
+
+#Not Finished
+run the combine_model.py

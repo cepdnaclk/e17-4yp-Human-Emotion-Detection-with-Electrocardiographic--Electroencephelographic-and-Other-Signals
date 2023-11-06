@@ -1,9 +1,9 @@
-import os
+import os 
 import csv
 
 for i in range (23):
     for j in range (18):
-        with open(f'./DREAMER/ECG/{i+1}/{j+1}/{i+1}_{j+1}_stimuli.csv', 'r') as csvfile:
+        with open(f'../dreamer_classification/DREAMER/ECG/{i+1}/{j+1}/{i+1}_{j+1}_stimuli.csv', 'r') as csvfile:
             csv_reader = csv.reader(csvfile)
             original_data_a = []
             original_data_b = []
@@ -11,7 +11,7 @@ for i in range (23):
                 original_data_a.append(row[0])
                 original_data_b.append(row[1])
 
-            output_directory = f'./ECG'
+            output_directory = f'./ECG/'
             if not os.path.exists(output_directory):
                 os.makedirs(output_directory)
 
