@@ -3,7 +3,7 @@ Generally
 
 for ECG 
     run the ecg_data.py file
-    run the Combine_test_train_split_ECG.py fie 
+    run the Combine_test_train_split_ECG.py file 
     #Finished
     
 for EEG 
