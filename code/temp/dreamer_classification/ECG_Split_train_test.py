@@ -1,15 +1,20 @@
+import os 
 import random
 
 # Define the input files and the output files
-data_file1 = "ECG_a.txt"
-data_file2 = "ECG_b.txt"
-labels_file = "labels.txt"
-train_data_file1 = "train_a.txt"
-train_data_file2 = "train_b.txt"
-train_labels_file = "train_labels.txt"
-test_data_file1 = "test_a.txt"
-test_data_file2 = "test_b.txt"
-test_labels_file = "test_labels.txt"
+data_file1 = "./ECG/ECG_a.txt"
+data_file2 = "./ECG/ECG_b.txt"
+labels_file = "./Labels/labels.txt"
+train_data_file1 = "./Train_Test_Spilt_ECG/train_a.txt"
+train_data_file2 = "./Train_Test_Spilt_ECG/train_b.txt"
+train_labels_file = "./Train_Test_Spilt_ECG/train_labels.txt"
+test_data_file1 = "./Train_Test_Spilt_ECG/test_a.txt"
+test_data_file2 = "./Train_Test_Spilt_ECG/test_b.txt"
+test_labels_file = "./Train_Test_Spilt_ECG/test_labels.txt"
+
+output_directory = f'./Train_Test_Spilt_ECG/'
+if not os.path.exists(output_directory):
+    os.makedirs(output_directory)
 
 # Open the input files and read the data and labels
 with open(data_file1, 'r') as data_file1,open(data_file2, 'r') as data_file2, open(labels_file, 'r') as labels_file:

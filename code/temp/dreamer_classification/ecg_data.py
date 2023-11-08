@@ -11,7 +11,7 @@ for i in range (23):
                 original_data_a.append(row[0])
                 original_data_b.append(row[1])
 
-            output_directory = f'./ECG'
+            output_directory = f'./ECG/'
             if not os.path.exists(output_directory):
                 os.makedirs(output_directory)
 
