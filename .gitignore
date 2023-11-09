@@ -8,6 +8,8 @@
 /code/temp/dreamer_classification/ECG
 /code/temp/dreamer_classification/Labels
 /code/temp/dreamer_classification/Train_Test_Spilt_ECG
+/code/temp/dreamer_classification/Train_Test_Split_EEG
+/code/temp/dreamer_classification/EEG
 
 /code/temp/pca/DREAMER/
 

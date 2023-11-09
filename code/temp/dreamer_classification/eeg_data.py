@@ -1,4 +1,9 @@
 import csv
+import os
+
+output_directory = 'EEG'
+if not os.path.exists(output_directory):
+    os.makedirs(output_directory)
 
 for i in range(23):
     for j in range(18):
@@ -14,7 +19,7 @@ for i in range(23):
 
         for character, data_list in zip('abcdefghijklmnn', original_data_lists):
             data_string = " ".join(data_list)
-            file_name = f'EEG_{character}.txt'
+            file_name = f'./{output_directory}/EEG_{character}.txt'
 
             with open(file_name, 'a') as textfile:
                 textfile.write(data_string + "\n")

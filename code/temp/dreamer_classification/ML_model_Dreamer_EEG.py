@@ -27,11 +27,13 @@ def evaluate_model(trainX, trainy, testX, testy):
     model.fit(trainX, trainy, epochs=epochs, batch_size=batch_size, verbose=verbose)
     # evaluate model
     _, accuracy = model.evaluate(testX, testy, batch_size=batch_size, verbose=0)
+    predictions = model.predict(testX)
+    print(predictions)
     return accuracy
 
 
 def load_file(filepath):
-    dataFrame = read_csv(filepath, header=None, delim_whitespace=True)
+    dataFrame = read_csv(filepath, header=None, delim_whitespace=True, engine='python')
     return dataFrame.values
 
 
@@ -46,7 +48,7 @@ def load_group(filenames, prefix=''):
 
 
 def load_dataset_group(group):
-    filepath = ''
+    filepath = './Train_Test_Split_EEG/'
     # load all 9 files as a single array
     filenames = list()
     filenames += [group + '_a.txt', group + '_b.txt', group + '_c.txt', group + '_d.txt',
@@ -83,7 +85,7 @@ def summarize_results(scores):
     print('Accuracy: %.3f%% (+/-%.3f)' % (m, s))
 
 
-def run_experiment(repeats=10):
+def run_experiment(repeats=1):
     # load data
     trainX, trainy, testX, testy = load_dataset()
     print('Finished Loading the Data')
