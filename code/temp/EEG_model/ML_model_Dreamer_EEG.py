@@ -58,7 +58,7 @@ def load_dataset_group(group):
     # load input data
     X = load_group(filenames, filepath)
     # load class output
-    y = load_file(group + '_labels.txt')
+    y = load_file('./Train_Test_Split_EEG/' + group + '_labels.txt')
     return X, y
 
 
