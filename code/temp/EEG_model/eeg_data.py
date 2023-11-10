@@ -7,7 +7,7 @@ if not os.path.exists(output_directory):
 
 for i in range(23):
     for j in range(18):
-        input_file = f'./DREAMER/EEG/{i+1}/{j+1}/{i+1}_{j+1}_stimuli.csv'
+        input_file = f'../dreamer_classification/DREAMER/EEG/{i+1}/{j+1}/{i+1}_{j+1}_stimuli.csv'
 
         original_data_lists = [list() for _ in range(14)]
 

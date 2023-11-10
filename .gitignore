@@ -5,14 +5,15 @@
 /code/__pycache__
 
 /code/temp/dreamer_classification/DREAMER
-/code/temp/dreamer_classification/ECG
-/code/temp/dreamer_classification/Labels
-/code/temp/dreamer_classification/Train_Test_Spilt_ECG
-/code/temp/dreamer_classification/Train_Test_Split_EEG
-/code/temp/dreamer_classification/EEG
+
+/code/temp/ECG_model/ECG
+/code/temp/ECG_model/Labels
+/code/temp/EEG_model/Labels
+/code/temp/ECG_model/Train_Test_Spilt_ECG
+/code/temp/EEG_model/Train_Test_Split_EEG
+/code/temp/EEG_model/EEG
 
 /code/temp/pca/DREAMER/
-
 /code/temp/pca/PCA_Column
 /code/temp/pca/PCA_EEG
 /code/temp/pca/PCA_Labels
