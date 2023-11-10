@@ -5,7 +5,7 @@ from sklearn.decomposition import PCA
 
 for i in range(23):
     for j in range(18):
-        data = pd.read_csv(f'../dreamer_classification/DREAMER/EEG/{i + 1}/{j + 1}/{i + 1}_{j + 1}_stimuli.csv')
+        data = pd.read_csv(f'../DREAMER/EEG/{i + 1}/{j + 1}/{i + 1}_{j + 1}_stimuli.csv')
         X = data.iloc[:, :14]
 
         # scaler = StandardScaler()

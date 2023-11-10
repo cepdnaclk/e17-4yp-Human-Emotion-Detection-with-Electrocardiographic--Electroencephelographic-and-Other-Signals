@@ -4,7 +4,7 @@
 /code/prev/DATA_FILES
 /code/__pycache__
 
-/code/temp/dreamer_classification/DREAMER
+/code/temp/DREAMER
 
 /code/temp/ECG_model/ECG
 /code/temp/ECG_model/Labels
@@ -25,5 +25,3 @@
 /code/temp/combine/Train_Test_Data_EEG
 /code/temp/combine/PCA_EEG
 /code/temp/combine/EEG
-
-
