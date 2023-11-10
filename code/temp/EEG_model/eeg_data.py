@@ -19,8 +19,9 @@ for i in range(23):
                     rounded_data = round(raw_data, 6)  # Round to 6 decimal points
                     data_list.append(str(rounded_data))
 
-        for character, data_list in zip('abcdefghijklmnn', original_data_lists):
-            data_string = " ".join(data_list)
+        for character, data_list in zip('abcdefghijklmn', original_data_lists):
+            selected_data = data_list[-15360:]
+            data_string = " ".join(selected_data)
             file_name = f'./{output_directory}/EEG_{character}.txt'
 
             with open(file_name, 'a') as textfile:
