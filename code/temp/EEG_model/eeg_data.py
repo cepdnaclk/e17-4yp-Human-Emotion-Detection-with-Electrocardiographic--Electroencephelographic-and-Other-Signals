@@ -15,7 +15,9 @@ for i in range(23):
             csv_reader = csv.reader(csvfile)
             for row in csv_reader:
                 for index, data_list in enumerate(original_data_lists):
-                    data_list.append(row[index])
+                    raw_data = float(row[index])  # Convert the string to a float
+                    rounded_data = round(raw_data, 6)  # Round to 6 decimal points
+                    data_list.append(rounded_data)
 
         for character, data_list in zip('abcdefghijklmnn', original_data_lists):
             data_string = " ".join(data_list)
