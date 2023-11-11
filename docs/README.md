@@ -37,6 +37,12 @@ title: Human Emotion Detection with Electrocardiographic-Electroencephelographic
 
 ## Abstract
 
+In this research, we explore the integration of Electroencephalography (EEG) and Electrocardiography (ECG) data to classify human emotions through Convolutional Neural Networks (CNN) to enhance emotion classification accuracy.
+
+Our study involves our own data collection process from participants via video and audio stimuli for five distinct emotions. But due to a hardware failure and the limited sample size, our approach trained on the DREAMER dataset, that offers signals which were recorded during affect elicitation by means of audio-visual stimuli from 23 participants along with their self-assessment, in terms of valence, arousal, and dominance.
+
+Understanding and classifying human emotions is a complex and an important aspect of human-computer interaction and healthcare. EEG captures neural activity and reflects neural patterns associated with cognitive processing, while ECG records cardiac signals and provides insights into autonomic nervous system responses. The combination of these two enhances the robustness and depth of emotion classification and helps to accurately identify emotions of a person at a given instance.
+
 ## Related works
 
 ## Methodology
