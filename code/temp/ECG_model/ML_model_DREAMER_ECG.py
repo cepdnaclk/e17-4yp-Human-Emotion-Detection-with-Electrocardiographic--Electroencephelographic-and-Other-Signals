@@ -9,14 +9,16 @@ from numpy import dstack
 from numpy import mean
 from numpy import std
 from pandas import read_csv
-
+import numpy as np
+from sklearn.metrics import confusion_matrix, classification_report
 
 def evaluate_model(trainX, trainy, testX, testy):
-    verbose, epochs, batch_size = 0, 10, 32
+    verbose, epochs, batch_size = 0, 32, 32
     n_timesteps, n_features, n_outputs = trainX.shape[1], trainX.shape[2], trainy.shape[1]
+    print(f"time_stamps = {n_timesteps} feature = {n_features}")
     model = Sequential()
-    model.add(Conv1D(filters=64, kernel_size=3, activation='relu', input_shape=(n_timesteps, n_features)))
-    model.add(Conv1D(filters=64, kernel_size=3, activation='relu'))
+    model.add(Conv1D(filters=64, kernel_size=4, activation='relu', input_shape=(n_timesteps, n_features)))
+    model.add(Conv1D(filters=64, kernel_size=4, activation='relu'))
     model.add(Dropout(0.5))
     model.add(MaxPooling1D(pool_size=2))
     model.add(Flatten())
@@ -26,9 +28,26 @@ def evaluate_model(trainX, trainy, testX, testy):
     # fit network
     model.fit(trainX, trainy, epochs=epochs, batch_size=batch_size, verbose=verbose)
     # evaluate model
-    _, accuracy = model.evaluate(testX, testy, batch_size=batch_size, verbose=0)
-    predictions = model.predict(testX)
-    print(predictions)
+    # _, accuracy = model.evaluate(testX, testy, batch_size=batch_size, verbose=0)
+    results = model.evaluate(testX, testy, verbose=0)
+    accuracy = results[model.metrics_names.index('accuracy')]
+    print("Accuracy:", accuracy)
+    # predictions = model.predict(testX)
+    # print("PREDICTIONS")
+    # print(predictions)
+    # predicted_labels = np.argmax(predictions, axis=1)
+    # print("PREDICTED LABELS")
+    # print(predicted_labels)
+    # print("TEST_Y")
+    # print(testy)
+    # print("TEST_X")
+    # print(testX)
+    # conf_matrix = confusion_matrix(testy, predicted_labels)
+    # print("Confusion Matrix:")
+    # print(conf_matrix)
+    # class_report = classification_report(testy, predicted_labels)
+    # print("Classification Report:")
+    # print(class_report)
     return accuracy
 
 def load_file(filepath):
