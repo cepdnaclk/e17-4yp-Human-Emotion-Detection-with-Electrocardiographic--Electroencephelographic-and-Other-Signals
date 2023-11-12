@@ -4,24 +4,24 @@
 /code/prev/DATA_FILES
 /code/__pycache__
 
-/code/temp/DREAMER
+/code/ML_MODELS/DREAMER
 
-/code/temp/ECG_model/ECG
-/code/temp/ECG_model/Labels
-/code/temp/EEG_model/Labels
-/code/temp/ECG_model/Train_Test_Spilt_ECG
-/code/temp/EEG_model/Train_Test_Split_EEG
-/code/temp/EEG_model/EEG
+/code/ML_MODELS/ECG_model/ECG
+/code/ML_MODELS/ECG_model/Labels
+/code/ML_MODELS/EEG_model/Labels
+/code/ML_MODELS/ECG_model/Train_Test_Spilt_ECG
+/code/ML_MODELS/EEG_model/Train_Test_Split_EEG
+/code/ML_MODELS/EEG_model/EEG
 
-/code/temp/pca/DREAMER/
-/code/temp/pca/PCA_Column
-/code/temp/pca/PCA_EEG
-/code/temp/pca/PCA_Labels
-/code/temp/pca/Train_Test_Data
+/code/ML_MODELS/PCA/DREAMER/
+/code/ML_MODELS/PCA/PCA_Column
+/code/ML_MODELS/PCA/PCA_EEG
+/code/ML_MODELS/PCA/PCA_Labels
+/code/ML_MODELS/PCA/Train_Test_Data
 
-/code/temp/combine/ECG
-/code/temp/combine/Labels
-/code/temp/combine/Train_Test_Data_ECG
-/code/temp/combine/Train_Test_Data_EEG
-/code/temp/combine/PCA_EEG
-/code/temp/combine/EEG
+/code/ML_MODELS/Combine_model/ECG
+/code/ML_MODELS/Combine_model/Labels
+/code/ML_MODELS/Combine_model/Train_Test_Data_ECG
+/code/ML_MODELS/Combine_model/Train_Test_Data_EEG
+/code/ML_MODELS/Combine_model/PCA_EEG
+/code/ML_MODELS/Combine_model/EEG
