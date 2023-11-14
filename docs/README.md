@@ -114,10 +114,31 @@ After collecting data, we have used filters to remove noises that were added fro
 - Frequency of data collection ECG - 1000Hz , EEG - 250Hz
 
 The raw signals and filtered signals are shown in below figures.
-| | |
+
+<!-- | | |
 | :---------------------------------------------------------------------: | :-------------------------------------------------------------------------------: |
 | ![Raw Signal](./images/ECG_Signals/1.jpeg) Raw Signal | ![Filtered Signal](./images/ECG_Signals/2.jpeg) Filtered Signal |
-| ![Raw Signal - Zoomed](./images/ECG_Signals/3.jpeg) Raw Signal - Zoomed | ![Filtered Signal - Zoomed](./images/ECG_Signals/4.jpeg) Filtered Signal - Zoomed |
+| ![Raw Signal - Zoomed](./images/ECG_Signals/3.jpeg) Raw Signal - Zoomed | ![Filtered Signal - Zoomed](./images/ECG_Signals/4.jpeg) Filtered Signal - Zoomed | -->
+
+<p align="center">
+    <img src="./images/ECG_Signals/1.jpeg"  width="750" /><br />
+    <span><i>Raw Signal</i></span>
+</p>
+
+<p align="center">
+    <img src="./images/ECG_Signals/2.jpeg"  width="750" /><br />
+    <span><i>Filtered Signal</i></span>
+</p>
+
+<p align="center">
+    <img src="./images/ECG_Signals/3.jpeg"  width="750" /><br />
+    <span><i>Raw Signal - Zoomed</i></span>
+</p>
+
+<p align="center">
+    <img src="./images/ECG_Signals/4.jpeg"  width="750" /><br />
+    <span><i>Filtered Signal - Zoomed</i></span>
+</p>
 
 ## Results and Analysis
 
