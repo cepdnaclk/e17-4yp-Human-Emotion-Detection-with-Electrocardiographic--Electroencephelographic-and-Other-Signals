@@ -9,9 +9,12 @@ from numpy import dstack
 from numpy import mean
 from numpy import std
 from pandas import read_csv
-
+import numpy as np
 
 def evaluate_model(trainX, trainy, testX, testy):
+    trainX[np.isnan(trainX)] = 0
+    testX[np.isnan(testX)] = 0
+
     verbose, epochs, batch_size = 0, 10, 32
     n_timesteps, n_features, n_outputs = trainX.shape[1], trainX.shape[2], trainy.shape[1]
     model = Sequential()
