@@ -76,6 +76,74 @@ EEG and ECG data were collected during the initial stage of the project. There w
 
 ## Experiment Setup and Implementation
 
+### Hardware Setup and Data Collection
+
+The hardware setup (EEG device and ECG device) should be correctly placed on the participant before collecting data. It involved several steps;
+
+- There were 8 electrodes in the EEG device. As we used a customized, wearable EEG setup (Fig 02), it was thoroughly checked for correct placement of each electrode on the scalp.
+- The ECG device had 3 electrodes and needed to have enough electrode gel before placing them. The electrode placements are shown in Fig 01, 03 and 04.
+
+<div style="display:flex; flex-wrap: wrap; justify-content: space-around; margin-bottom: 20px;">
+   <div style="text-align:center; margin-right: 20px;">
+      <img src="./images/Experiment_Setup/ECG_Setup.JPG" alt="ECG Setup" width="300"/>
+      <p>Fig.01: ECG Setup</p>
+   </div>
+   <div style="text-align:center;">
+      <img src="./images/Experiment_Setup/EEG_Setup.JPG" alt="EEG Setup" width="300"/> 
+      <p>Fig.02: EEG Setup</p>
+  </div>
+</div>
+
+<div style="display:flex; flex-wrap: wrap; justify-content: space-around; margin-bottom: 20px;">
+   <div style="text-align:center; margin-right: 20px;">
+      <img src="./images/Experiment_Setup/Electrode_Placement_Left.JPG" alt="Electrode Placement Left" width="300"/>
+      <p>Fig.03: Electrode Placement Left</p>
+   </div>
+   <div style="text-align:center;">
+      <img src="./images/Experiment_Setup/Electrode_Placement_Right.JPG" alt="Electrode Placement Right" width="300"/> 
+      <p>fig.04: Electrode Placement Right</p>
+  </div>
+</div>
+
+<div style="display:flex; flex-wrap: wrap; justify-content: space-around; margin-bottom: 20px;">
+   <div style="text-align:center; margin-right: 20px;">
+      <img src="./images/Experiment_Setup/Getting_Data.jpeg" alt="Data Collection Process" width="500" />
+      <!-- <img src="./images/Experiment_Setup/ECG_Setup.JPG" alt="ECG Setup" width="300"/> -->
+      <p>Fig.05: Data Collection Process</p>
+   </div>
+</div>
+
+### Data and Processing
+
+After collecting data, we have used filters to remove noises that were added from nearby electronic devices.
+
+- Butterworth bandpass filter within the 0.05 Hz to 100 Hz frequency range.
+- Frequency of data collection ECG - 1000Hz , EEG - 250Hz
+
+The raw signals and filtered signals are shown in below figures.
+
+<div style="display:flex; flex-wrap: wrap; justify-content: space-around; margin-bottom: 20px;">
+   <div style="text-align:center; margin-right: 20px;">
+      <img src="./images/ECG_Signals/1.jpeg" alt="Raw Signal" width="550"/>
+      <p>Raw Signal</p>
+   </div>
+   <div style="text-align:center;">
+      <img src="./images/ECG_Signals/2.jpeg" alt="Filtered Signal" width="550"/> 
+      <p>Filtered Signal</p>
+  </div>
+</div>
+
+<div style="display:flex; flex-wrap: wrap; justify-content: space-around; margin-bottom: 20px;">
+   <div style="text-align:center; margin-right: 20px;">
+      <img src="./images/ECG_Signals/3.jpeg" alt="Raw Signal Zoomed" width="550"/>
+      <p>Raw Signal - Zoomed</p>
+   </div>
+   <div style="text-align:center;">
+      <img src="./images/ECG_Signals/4.jpeg" alt="Filtered Signal - Zoomed" width="550"/> 
+      <p>Filtered Signal - Zoomed</p>
+  </div>
+</div>
+
 ## Results and Analysis
 
 ## Conclusion
