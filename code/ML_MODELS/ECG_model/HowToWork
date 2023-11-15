@@ -1,5 +1,11 @@
-For ECG 
-    run the ecg_data.py file 
-    run the labeling.py
-    run the ECG_split_train_test
-    run the ML_Model_DREAMER_ECG
+for standarizing
+initially run the standardized_ecg.py
+put true in ecg_data
+else
+put false in ecg_data
+
+For ECG
+run the ecg_data.py file
+run the labeling.py
+run the ECG_split_train_test
+run the ML_Model_DREAMER_ECG
