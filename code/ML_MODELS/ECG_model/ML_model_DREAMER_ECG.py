@@ -88,13 +88,13 @@ def run_experiment(repeats=1):
     trainX, trainy, testX, testy = load_dataset()
     print('Finished Loading the Data')
     # repeat experiment
-    scores = list()
+    train_scores = list()
     for r in range(repeats):
-        score = evaluate_model(trainX, trainy, testX, testy)
-        score = score * 100.0
-        print('>#%d: %.3f' % (r + 1, score))
-        scores.append(score)
+        train_accuracy, test_accuracy = evaluate_model(trainX, trainy, testX, testy)
+        train_score = train_accuracy * 100.0
+        print('>#%d: %.3f' % (r + 1, train_score))
+        train_scores.append(train_score)
     # summarize results
-    summarize_results(scores)
+    summarize_results(train_scores)
 
 run_experiment()
