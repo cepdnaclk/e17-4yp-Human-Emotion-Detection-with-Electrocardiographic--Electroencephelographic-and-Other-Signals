@@ -12,6 +12,7 @@
 /code/ML_MODELS/ECG_model/Train_Test_Spilt_ECG
 /code/ML_MODELS/EEG_model/Train_Test_Split_EEG
 /code/ML_MODELS/EEG_model/EEG
+/code/ML_MODELS/ECG_model/Standardized_ECG
 
 /code/ML_MODELS/PCA/DREAMER/
 /code/ML_MODELS/PCA/PCA_Column

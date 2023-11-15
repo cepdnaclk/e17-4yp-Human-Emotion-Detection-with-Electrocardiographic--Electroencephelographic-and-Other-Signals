@@ -13,26 +13,28 @@ import numpy as np
 from sklearn.metrics import confusion_matrix, classification_report
 
 def evaluate_model(trainX, trainy, testX, testy):
-    verbose, epochs, batch_size = 0, 32, 32
+    verbose, epochs, batch_size = 0, 16, 32
     n_timesteps, n_features, n_outputs = trainX.shape[1], trainX.shape[2], trainy.shape[1]
-    print(f"time_stamps = {n_timesteps} feature = {n_features}")
     model = Sequential()
-    model.add(Conv1D(filters=64, kernel_size=4, activation='relu', input_shape=(n_timesteps, n_features)))
+    model.add(Conv1D(filters=64, kernel_size=4, activation='sigmoid', input_shape=(n_timesteps, n_features)))
+    model.add(MaxPooling1D(pool_size=4))
     model.add(Conv1D(filters=64, kernel_size=4, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(MaxPooling1D(pool_size=2))
+    model.add(MaxPooling1D(pool_size=4))
     model.add(Flatten())
-    model.add(Dense(100, activation='relu'))
+    model.add(Dense(256, activation='relu'))
+    # model.add(Dropout(0.2))
+    model.add(Dense(128, activation='relu'))
     model.add(Dense(n_outputs, activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
     # fit network
-    model.fit(trainX, trainy, epochs=epochs, batch_size=batch_size, verbose=verbose)
+    # model.fit(trainX, trainy, epochs=epochs, batch_size=batch_size, verbose=1)
     # evaluate model
     # _, accuracy = model.evaluate(testX, testy, batch_size=batch_size, verbose=0)
-    results = model.evaluate(testX, testy, verbose=0)
-    accuracy = results[model.metrics_names.index('accuracy')]
-    print("Accuracy:", accuracy)
-    # predictions = model.predict(testX)
+    # results = model.evaluate(testX, testy, batch_size=batch_size, verbose=1)
+    # accuracy = results[model.metrics_names.index('accuracy')]
+    # print("Accuracy:", accuracy)
+    # predictions = model.predict(testX, batch_size=batch_size)
     # print("PREDICTIONS")
     # print(predictions)
     # predicted_labels = np.argmax(predictions, axis=1)
@@ -48,7 +50,17 @@ def evaluate_model(trainX, trainy, testX, testy):
     # class_report = classification_report(testy, predicted_labels)
     # print("Classification Report:")
     # print(class_report)
-    return accuracy
+    model.fit(trainX, trainy, epochs=epochs, batch_size=batch_size, verbose=verbose)
+
+    # evaluate model on train set
+    _, train_accuracy = model.evaluate(trainX, trainy, batch_size=batch_size, verbose=0)
+    print('Train Accuracy: %.2f%%' % (train_accuracy * 100))
+
+    # evaluate model on test set
+    _, test_accuracy = model.evaluate(testX, testy, batch_size=batch_size, verbose=0)
+    print('Test Accuracy: %.2f%%' % (test_accuracy * 100))
+
+    return train_accuracy, test_accuracy
 
 def load_file(filepath):
     dataFrame = read_csv(filepath, header=None, delim_whitespace=True)
@@ -100,13 +112,13 @@ def run_experiment(repeats=1):
     trainX, trainy, testX, testy = load_dataset()
     print('Finished Loading the Data')
     # repeat experiment
-    scores = list()
+    train_scores = list()
     for r in range(repeats):
-        score = evaluate_model(trainX, trainy, testX, testy)
-        score = score * 100.0
-        print('>#%d: %.3f' % (r + 1, score))
-        scores.append(score)
+        train_accuracy, test_accuracy = evaluate_model(trainX, trainy, testX, testy)
+        train_score = train_accuracy * 100.0
+        print('>#%d: %.3f' % (r + 1, train_score))
+        train_scores.append(train_score)
     # summarize results
-    summarize_results(scores)
+    summarize_results(train_scores)
 
 run_experiment()

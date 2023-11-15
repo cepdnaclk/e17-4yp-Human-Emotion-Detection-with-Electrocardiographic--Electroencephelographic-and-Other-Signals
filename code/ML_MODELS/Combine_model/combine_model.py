@@ -11,34 +11,58 @@ from numpy import dstack
 from numpy import mean
 from numpy import std
 from pandas import read_csv
-
+import numpy as np
 
 def evaluate_model(trainXEEG, trainXECG, trainy, testXEEG, testXECG, testy):
-    verbose, epochs, batch_size = 0, 1, 32
+    trainXEEG[np.isnan(trainXEEG)] = 0
+    testXEEG[np.isnan(testXEEG)] = 0
+    trainXECG[np.isnan(trainXECG)] = 0
+    testXECG[np.isnan(testXECG)] = 0
+
+    trainXEEG = trainXEEG.astype('float32')
+    xmax = np.amax(trainXEEG)
+    trainXEEG = trainXEEG / xmax
+
+    testXEEG = testXEEG.astype('float32')
+    xmax = np.amax(testXEEG)
+    testXEEG = testXEEG / xmax
+
+    trainXECG = trainXECG.astype('float32')
+    xmax = np.amax(trainXECG)
+    trainXECG = trainXECG / xmax
+
+    testXECG = testXECG.astype('float32')
+    xmax = np.amax(testXECG)
+    testXECG = testXECG / xmax
+
+    verbose, epochs, batch_size = 0, 32, 32
     n_timesteps_EEG, n_features_EEG, n_outputs = trainXEEG.shape[1], trainXEEG.shape[2], trainy.shape[1]
     input_EEG = Input(shape=(n_timesteps_EEG, n_features_EEG))
-    conv1_EEG = Conv1D(filters=64, kernel_size=3, activation='relu')(input_EEG)
-    conv2_EEG = Conv1D(filters=64, kernel_size=3, activation='relu')(conv1_EEG)
-    pool_EEG = MaxPooling1D(pool_size=2)(conv2_EEG)
-    dropout_EEG = Dropout(0.5)(pool_EEG)
+    conv1_EEG = Conv1D(filters=32, kernel_size=4, activation='relu')(input_EEG)
+    conv2_EEG = Conv1D(filters=64, kernel_size=4, activation='relu')(conv1_EEG)
+    pool_EEG = MaxPooling1D(pool_size=4)(conv2_EEG)
+    dropout_EEG = Dropout(0.2)(pool_EEG)
     flat_EEG = Flatten()(dropout_EEG)
 
     n_timesteps_ECG, n_features_ECG, n_outputs = trainXECG.shape[1], trainXECG.shape[2], trainy.shape[1]
     input_ECG = Input(shape=(n_timesteps_ECG, n_features_ECG))
-    conv1_ECG = Conv1D(filters=64, kernel_size=3, activation='relu')(input_ECG)
-    conv2_ECG = Conv1D(filters=64, kernel_size=3, activation='relu')(conv1_ECG)
-    pool_ECG = MaxPooling1D(pool_size=2)(conv2_ECG)
-    dropout_ECG = Dropout(0.5)(pool_ECG)
+    conv1_ECG = Conv1D(filters=128, kernel_size=4, activation='relu')(input_ECG)
+    conv2_ECG = Conv1D(filters=64, kernel_size=4, activation='relu')(conv1_ECG)
+    pool_ECG = MaxPooling1D(pool_size=4)(conv2_ECG)
+    dropout_ECG = Dropout(0.2)(pool_ECG)
     flat_ECG = Flatten()(dropout_ECG)
 
     merged = concatenate([flat_EEG, flat_ECG])
 
-    dense_layer = Dense(128, activation='relu')(merged)
-    output = Dense(n_outputs, activation='softmax')(dense_layer)
+    dense_layer = Dense(200, activation='relu')(merged)
+    dense_layer2 = Dense(100, activation='relu')(dense_layer)
+    output = Dense(n_outputs, activation='softmax')(dense_layer2)
     model = Model(inputs=[input_EEG, input_ECG], outputs=output)
-    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='sgd', loss='categorical_crossentropy', metrics=['accuracy'])
     model.fit(x=[trainXEEG, trainXECG], y=trainy, epochs=epochs, batch_size=batch_size, verbose=verbose)
     _, accuracy = model.evaluate(x=[testXEEG, testXECG], y=testy, batch_size=batch_size, verbose=0)
+    predictions = model.predict([testXEEG, testXECG])
+    print(predictions)
     return accuracy
 
 
