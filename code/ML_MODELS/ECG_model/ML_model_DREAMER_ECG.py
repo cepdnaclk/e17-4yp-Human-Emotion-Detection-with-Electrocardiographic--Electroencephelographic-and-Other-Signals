@@ -13,42 +13,30 @@ import numpy as np
 from sklearn.metrics import confusion_matrix, classification_report
 
 def evaluate_model(trainX, trainy, testX, testy):
-    verbose, epochs, batch_size = 0, 32, 32
+    verbose, epochs, batch_size = 0, 10, 32
     n_timesteps, n_features, n_outputs = trainX.shape[1], trainX.shape[2], trainy.shape[1]
-    print(f"time_stamps = {n_timesteps} feature = {n_features}")
     model = Sequential()
-    model.add(Conv1D(filters=64, kernel_size=4, activation='relu', input_shape=(n_timesteps, n_features)))
-    model.add(Conv1D(filters=64, kernel_size=4, activation='relu'))
+    model.add(Conv1D(filters=64, kernel_size=3, activation='relu', input_shape=(n_timesteps, n_features)))
+    model.add(Conv1D(filters=64, kernel_size=3, activation='relu'))
     model.add(Dropout(0.5))
     model.add(MaxPooling1D(pool_size=2))
     model.add(Flatten())
     model.add(Dense(100, activation='relu'))
     model.add(Dense(n_outputs, activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
     # fit network
     model.fit(trainX, trainy, epochs=epochs, batch_size=batch_size, verbose=verbose)
-    # evaluate model
-    # _, accuracy = model.evaluate(testX, testy, batch_size=batch_size, verbose=0)
-    results = model.evaluate(testX, testy, verbose=0)
-    accuracy = results[model.metrics_names.index('accuracy')]
-    print("Accuracy:", accuracy)
-    # predictions = model.predict(testX)
-    # print("PREDICTIONS")
-    # print(predictions)
-    # predicted_labels = np.argmax(predictions, axis=1)
-    # print("PREDICTED LABELS")
-    # print(predicted_labels)
-    # print("TEST_Y")
-    # print(testy)
-    # print("TEST_X")
-    # print(testX)
-    # conf_matrix = confusion_matrix(testy, predicted_labels)
-    # print("Confusion Matrix:")
-    # print(conf_matrix)
-    # class_report = classification_report(testy, predicted_labels)
-    # print("Classification Report:")
-    # print(class_report)
-    return accuracy
+
+    # evaluate model on train set
+    _, train_accuracy = model.evaluate(trainX, trainy, batch_size=batch_size, verbose=0)
+    print('Train Accuracy: %.2f%%' % (train_accuracy * 100))
+
+    # evaluate model on test set
+    _, test_accuracy = model.evaluate(testX, testy, batch_size=batch_size, verbose=0)
+    print('Test Accuracy: %.2f%%' % (test_accuracy * 100))
+
+    return train_accuracy, test_accuracy
 
 def load_file(filepath):
     dataFrame = read_csv(filepath, header=None, delim_whitespace=True)
