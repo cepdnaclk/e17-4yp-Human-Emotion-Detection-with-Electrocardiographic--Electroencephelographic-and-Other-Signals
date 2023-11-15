@@ -13,19 +13,43 @@ import numpy as np
 from sklearn.metrics import confusion_matrix, classification_report
 
 def evaluate_model(trainX, trainy, testX, testy):
-    verbose, epochs, batch_size = 0, 10, 32
+    verbose, epochs, batch_size = 0, 16, 32
     n_timesteps, n_features, n_outputs = trainX.shape[1], trainX.shape[2], trainy.shape[1]
     model = Sequential()
-    model.add(Conv1D(filters=64, kernel_size=3, activation='relu', input_shape=(n_timesteps, n_features)))
-    model.add(Conv1D(filters=64, kernel_size=3, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(MaxPooling1D(pool_size=2))
+    model.add(Conv1D(filters=64, kernel_size=4, activation='sigmoid', input_shape=(n_timesteps, n_features)))
+    model.add(MaxPooling1D(pool_size=4))
+    model.add(Conv1D(filters=64, kernel_size=4, activation='relu'))
+    model.add(MaxPooling1D(pool_size=4))
     model.add(Flatten())
-    model.add(Dense(100, activation='relu'))
+    model.add(Dense(256, activation='relu'))
+    # model.add(Dropout(0.2))
+    model.add(Dense(128, activation='relu'))
     model.add(Dense(n_outputs, activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     # fit network
+    # model.fit(trainX, trainy, epochs=epochs, batch_size=batch_size, verbose=1)
+    # evaluate model
+    # _, accuracy = model.evaluate(testX, testy, batch_size=batch_size, verbose=0)
+    # results = model.evaluate(testX, testy, batch_size=batch_size, verbose=1)
+    # accuracy = results[model.metrics_names.index('accuracy')]
+    # print("Accuracy:", accuracy)
+    # predictions = model.predict(testX, batch_size=batch_size)
+    # print("PREDICTIONS")
+    # print(predictions)
+    # predicted_labels = np.argmax(predictions, axis=1)
+    # print("PREDICTED LABELS")
+    # print(predicted_labels)
+    # print("TEST_Y")
+    # print(testy)
+    # print("TEST_X")
+    # print(testX)
+    # conf_matrix = confusion_matrix(testy, predicted_labels)
+    # print("Confusion Matrix:")
+    # print(conf_matrix)
+    # class_report = classification_report(testy, predicted_labels)
+    # print("Classification Report:")
+    # print(class_report)
     model.fit(trainX, trainy, epochs=epochs, batch_size=batch_size, verbose=verbose)
 
     # evaluate model on train set
