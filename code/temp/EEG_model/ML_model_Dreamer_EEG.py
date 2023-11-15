@@ -23,14 +23,19 @@ def evaluate_model(trainX, trainy, testX, testy):
     model.add(Dense(100, activation='relu'))
     model.add(Dense(n_outputs, activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
     # fit network
     model.fit(trainX, trainy, epochs=epochs, batch_size=batch_size, verbose=verbose)
-    # evaluate model
-    _, accuracy = model.evaluate(testX, testy, batch_size=batch_size, verbose=0)
-    predictions = model.predict(testX)
-    print(predictions)
-    return accuracy
 
+    # evaluate model on train set
+    _, train_accuracy = model.evaluate(trainX, trainy, batch_size=batch_size, verbose=0)
+    print('Train Accuracy: %.2f%%' % (train_accuracy * 100))
+
+    # evaluate model on test set
+    _, test_accuracy = model.evaluate(testX, testy, batch_size=batch_size, verbose=0)
+    print('Test Accuracy: %.2f%%' % (test_accuracy * 100))
+
+    return train_accuracy, test_accuracy
 
 def load_file(filepath):
     dataFrame = read_csv(filepath, header=None, delim_whitespace=True, engine='python')
