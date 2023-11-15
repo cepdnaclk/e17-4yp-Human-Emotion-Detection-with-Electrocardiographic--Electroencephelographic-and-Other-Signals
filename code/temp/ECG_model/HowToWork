@@ -1,5 +1,0 @@
-For ECG 
-    run the ecg_data.py file 
-    run the labeling.py
-    run the ECG_split_train_test
-    run the ML_Model_DREAMER_ECG
