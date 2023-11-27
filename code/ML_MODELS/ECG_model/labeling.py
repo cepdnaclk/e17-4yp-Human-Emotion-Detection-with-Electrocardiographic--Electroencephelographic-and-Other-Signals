@@ -1,10 +1,10 @@
 import os
 import numpy as np
 
-DEVIDE_NUMBER = 1
+DIVIDE_NUMBER = 1
 
 label = [2, 1, 1, 4, 1, 4, 1, 4, 3, 4, 2, 1, 1, 4, 4, 1, 3, 1]
-repeated_labels = np.repeat(label, DEVIDE_NUMBER)
+repeated_labels = np.repeat(label, DIVIDE_NUMBER)
 output = np.tile(repeated_labels, 23)
 
 output_directory = "Labels"
