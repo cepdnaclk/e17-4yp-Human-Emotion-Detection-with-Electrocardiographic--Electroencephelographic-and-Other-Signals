@@ -43,7 +43,10 @@ Our study involves our own data collection process from participants via video a
 
 Understanding and classifying human emotions is a complex and an important aspect of human-computer interaction and healthcare. EEG captures neural activity and reflects neural patterns associated with cognitive processing, while ECG records cardiac signals and provides insights into autonomic nervous system responses. The combination of these two enhances the robustness and depth of emotion classification and helps to accurately identify emotions of a person at a given instance.
 
-<!-- ## Related works -->
+## Related works
+
+The research area of using physiological signals for human emotion detection is an expansive and enduring field, and an infinite number of studies have been done, are going on, and will happen in the future as well. With the advancement of technology, research has also grown to use ML and AI-based techniques in this research area. This section is about the works that are relative to the research. Here you can find a comprehensive Literature review on this field using following link.
+- [Comprehensive Review](./public/Pera___emotion_data_collection_survay.pdf)
 
 ## Methodology
 
@@ -54,21 +57,22 @@ The project consists of two stages: the data acquisition stage and the developme
 EEG and ECG data were collected during the initial stage of the project. There were several steps to follow for each participant to ensure proper data collection.
 
 1. Read the information sheet
-   - [sheet](https://docs.google.com/document/d/1kH4Qc642DGC6JXFG4AZ8_8hR5N0Sukr8RF1XjaJ_s2U/edit)
    - Each participant should read the information sheet and get prior knowledge of the study before participating and they must agree to the terms and conditions.
-2. Do the pre experiment survey
+   - [Information Sheet](https://docs.google.com/document/d/1kH4Qc642DGC6JXFG4AZ8_8hR5N0Sukr8RF1XjaJ_s2U/edit)
 
-   - [form](https://docs.google.com/forms/d/e/1FAIpQLSewSYhT5gAMh9bNCn5KEJD6RPty2wUojrs8no-RuE5fgjSv6w/viewform)
+2. Do the pre experiment survey
    - This is to get the required information about the participant before participating in the study. Note that, all the data that were collected are anonymous and confidential.
    - We are collecting general information (age, gender,..), medical history, background details (nationality, race, religion,..), psychological measures, and technical information which we consider as important to study about the variety of the dataset.
+   - [Pre Experiment Survay](https://docs.google.com/forms/d/e/1FAIpQLSewSYhT5gAMh9bNCn5KEJD6RPty2wUojrs8no-RuE5fgjSv6w/viewform)
 
 3. Show audio,video stimuli
    - After completing the pre-experiment survey, we placed the equipment (EEG and ECG electrodes) on the participant and then the videos were shown to the participant.
    - There were five videos considering five emotions.
+
 4. Do the post experiment survey
-   - [form](https://docs.google.com/forms/d/e/1FAIpQLScAYqNibYVf16e_Ot6wFv2-LuvqbFBnrWLDJkyoghvEkMZi2g/viewform)
    - After each video, the relevant section of the post-examination survey was provided to the participants to fill by themself.
    - The reason for this survey was to know to what extent the emotion that we were expecting from the video was stimulated in the participants.
+   - [Post Experiment Survay](https://docs.google.com/forms/d/e/1FAIpQLScAYqNibYVf16e_Ot6wFv2-LuvqbFBnrWLDJkyoghvEkMZi2g/viewform)
 
 #### Stage 2: Development of the CNN Model
 
@@ -91,17 +95,12 @@ The purpose was to identify and compare both individual and compared models acco
 
 ## Experiment Setup and Implementation
 
-#### Hardware Setup and Data Collection
+#### Step 1: Hardware Setup and Data Collection
 
 The hardware setup (EEG device and ECG device) should be correctly placed on the participant before collecting data. It involved several steps;
 
 - There were 8 electrodes in the EEG device. As we used a customized, wearable EEG setup (Fig 03), it was thoroughly checked for correct placement of each electrode on the scalp.
 - The ECG device had 3 electrodes and needed to have enough electrode gel before placing them. The electrode placements are shown in Fig 02, 04 and 05.
-
-<p align="center">
-    <img src="./images/Experiment_Setup/ECG_Setup.JPG"  width="300" /><br />
-    <span><i>Fig.02: ECG Setup</i></span>
-</p>
 
 <p align="center">
     <img src="./images/Experiment_Setup/EEG_Setup.JPG"  width="300" /><br />
@@ -123,7 +122,7 @@ The hardware setup (EEG device and ECG device) should be correctly placed on the
     <span><i>Fig.06: Data Collection Process</i></span>
 </p>
 
-#### Software System
+#### Step 2: Software System
 
 The data collection UI was used as the frontend to collect data. There are 5 emotions, therefore 5 videos. After starting the data collection, the video pops into full screen. An image of the UI is shown below.
 
@@ -139,7 +138,7 @@ The backend was developed using python flask. As there were 2 process to run par
     <span><i>Backend</i></span>
 </p>
 
-#### Data and Processing
+#### Step 3: Data and Processing
 
 After collecting data, we have used filters to remove noises that were added from nearby electronic devices.
 
@@ -177,6 +176,8 @@ The raw signals and filtered signals are shown in below figures.
 | ECG model      | 50   | 59.1 | 54.7 | 54.7 | 50   |
 | EEG model      | 47.6 | 50   | 50   | 47.6 | 47.6 |
 | Combined model | 47.6 | 52.6 | 50   | 50   | 47.6 |
+
+<br>
 
 #### ML Model Accuracy Comparison with the DREAMER Research
 
