@@ -187,9 +187,11 @@ The raw signals and filtered signals are shown in below figures.
 | EEG model      | 59.1          | 62.3    | 62.3    | 61.5      |
 | Combined model | 50            | 62.4    | 62.1    | 61.8      |
 
-<!-- ## Conclusion
+## Conclusion
 
-## Publications -->
+The research outlines a procedure for emotion detection via Electroencephalography (EEG) and Electrocardiography (ECG). It begins with dataset presentation and later compares Artificial Neural Networks (ANN), Support Vector Machines, and Convolutional Neural Networks for emotion recognition using EEG and ECG. Detailed steps include subject education, hardware setup, and data collection ensuring minimal interference. The study selects the DREAMER dataset for machine learning model development, establishing a baseline model and improving it. Results showcase the potential of predicting emotions through ECG and EEG signals, offering insights for future research, affirming their contribution to advancing emotion prediction via these signals.
+
+<!-- ## Publications -->
 
 ## Links
 
