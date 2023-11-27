@@ -72,9 +72,21 @@ EEG and ECG data were collected during the initial stage of the project. There w
 
 #### Stage 2: Development of the CNN Model
 
+We have used a CNN base approach to develop the emotion classification model. For experimental stage we have developed two main models;
+
+- Individual CNN model : To classify emotions based on ECG or EEG signal. It uses either one signal to make predictions.
+- Combined CNN model : The model was developed to use both EEG & ECG signals together to classify emotions.
+
+The purpose was to identify and compare both individual and compared models according to performance. The model architecture diagrams are shown in the Figure 1 and Figure 2.
+
 <p align="center">
-    <img src="./images/CNN.png"  width="1000" /><br />
-    <span><i>Fig.01: ECG Setup</i></span>
+    <img src="./images/single_architecture.png"  width="1000" /><br />
+    <span><i>Fig.01: Architecture of the Individual CNN Model</i></span>
+</p>
+
+<p align="center">
+    <img src="./images/combined_architecture.png"  width="1000" /><br />
+    <span><i>Fig.02: Architecture of the Combined CNN Model</i></span>
 </p>
 
 ## Experiment Setup and Implementation
@@ -158,6 +170,22 @@ The raw signals and filtered signals are shown in below figures.
 
 ## Results and Analysis
 
+#### Accuracy Comparison with Data Division
+
+| model          | 60 s | 30 s | 20 s | 10 s | 1 s  |
+| :------------- | :--- | :--- | :--- | :--- | :--- |
+| ECG model      | 50   | 59.1 | 54.7 | 54.7 | 50   |
+| EEG model      | 47.6 | 50   | 50   | 47.6 | 47.6 |
+| Combined model | 47.6 | 52.6 | 50   | 50   | 47.6 |
+
+#### ML Model Accuracy Comparison with the DREAMER Research
+
+| model          | This approach | Valence | Arousal | Dominance |
+| :------------- | :------------ | :------ | :------ | :-------- |
+| ECG model      | 52.4          | 61.8    | 62.3    | 61.8      |
+| EEG model      | 59.1          | 62.3    | 62.3    | 61.5      |
+| Combined model | 50            | 62.4    | 62.1    | 61.8      |
+
 <!-- ## Conclusion
 
 ## Publications -->
@@ -168,3 +196,4 @@ The raw signals and filtered signals are shown in below figures.
 - [Project Page](https://cepdnaclk.github.io/e17-4yp-Human-Emotion-Detection-with-Electrocardiographic--Electroencephelographic-and-Other-Signals)
 - [Department of Computer Engineering](http://www.ce.pdn.ac.lk/)
 - [University of Peradeniya](https://eng.pdn.ac.lk/)
+- [Download the Research Paper](./public/Pera___emotion_data_collection.pdf)
